@@ -16,14 +16,35 @@ const FALLBACK_NAMES = [
   'Resto Bebek Goreng H. Slamet', 'Warung Tegal Mbak Yem', 'Warung Ayam Penyet Cak Bro',
 ];
 
+const isVipActive = (isVIP, vipExpiry) => {
+  if (!isVIP) return false;
+  const expiryDate = new Date(vipExpiry);
+  if (Number.isNaN(expiryDate.getTime())) return false;
+  return new Date() <= expiryDate;
+};
+
+const generateVipExpiry = (isVIP) => {
+  const expiryDate = new Date();
+  expiryDate.setDate(expiryDate.getDate() + (isVIP ? 14 : -1));
+  return expiryDate.toISOString();
+};
+
 const generateFallbackWarungData = (lat, lng) => {
   const warungKeywords = ['warung', 'nasi', 'soto', 'bakso', 'mie', 'pecel', 'penyetan', 'ayam', 'tegal', 'bahari', 'kantin', 'bebek', 'warkop', 'kopi'];
   const cafeKeywords = ['cafe', 'coffee', 'bistro', 'lounge', 'resto', 'restaurant'];
+  const randomFallbackNames = [...FALLBACK_NAMES].sort(() => Math.random() - 0.5).slice(0, 10);
+  const vipIndexes = new Set();
 
-  return FALLBACK_NAMES.map((name, i) => {
+  while (vipIndexes.size < 2) {
+    vipIndexes.add(Math.floor(Math.random() * randomFallbackNames.length));
+  }
+
+  return randomFallbackNames.map((name, i) => {
     const lowerName = name.toLowerCase();
     let estPrice = 15000;
     let isWarung = false;
+    const rawIsVIP = vipIndexes.has(i);
+    const vipExpiry = generateVipExpiry(rawIsVIP);
 
     if (warungKeywords.some(key => lowerName.includes(key))) {
       estPrice = 8000;
@@ -50,6 +71,8 @@ const generateFallbackWarungData = (lat, lng) => {
       priceNum: estPrice,
       priceRange: `Rp ${(estPrice / 1000).toFixed(0)}k-an`,
       isWarung,
+      isVIP: isVipActive(rawIsVIP, vipExpiry),
+      vipExpiry,
       category: isWarung ? 'Makanan Berat' : 'Tempat Nongkrong',
       views: Math.floor(Math.random() * 500) + 12,
     };
@@ -63,6 +86,7 @@ const processElements = (elements, userCoords) => {
   return elements.map((el) => {
     const name = el.tags?.name || 'Warung Rakyat';
     const lowerName = name.toLowerCase();
+    const vipExpiry = generateVipExpiry(false);
 
     let estPrice = 15000;
     let isWarung = false;
@@ -88,6 +112,8 @@ const processElements = (elements, userCoords) => {
       priceNum: estPrice,
       priceRange: `Rp ${(estPrice / 1000).toFixed(0)}k-an`,
       isWarung,
+      isVIP: isVipActive(false, vipExpiry),
+      vipExpiry,
       category: isWarung ? 'Makanan Berat' : 'Tempat Nongkrong',
       views: Math.floor(Math.random() * 500) + 12,
     };
@@ -96,10 +122,14 @@ const processElements = (elements, userCoords) => {
 
 const applyFiltersAndSort = (processed, budget) =>
   processed
-    .filter(w => w.distanceNum <= 5 && w.priceNum <= parseInt(budget))
+    .map(w => ({
+      ...w,
+      isVIP: isVipActive(w.isVIP, w.vipExpiry),
+    }))
+    .filter(w => w.distanceNum <= 5 && w.priceNum <= parseInt(budget, 10))
     .sort((a, b) => {
-      if (a.isWarung && !b.isWarung) return -1;
-      if (!a.isWarung && b.isWarung) return 1;
+      if (a.isVIP && !b.isVIP) return -1;
+      if (!a.isVIP && b.isVIP) return 1;
       return a.distanceNum - b.distanceNum;
     })
     .slice(0, 20);
