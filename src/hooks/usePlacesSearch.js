@@ -8,6 +8,9 @@ const OVERPASS_ENDPOINTS = [
 ];
 
 const FETCH_TIMEOUT_MS = 8000;
+const VIP_EXPIRY_DAYS = 14;
+const FALLBACK_WARUNG_COUNT = 10;
+const FALLBACK_VIP_COUNT = 2;
 
 const FALLBACK_NAMES = [
   'Warung Bu Sari', 'Warung Nasi Pak Budi', 'Warung Mie Ayam Joss',
@@ -25,7 +28,7 @@ const isVipActive = (isVIP, vipExpiry) => {
 
 const generateVipExpiry = (isVIP) => {
   const expiryDate = new Date();
-  expiryDate.setDate(expiryDate.getDate() + (isVIP ? 14 : -1));
+  expiryDate.setDate(expiryDate.getDate() + (isVIP ? VIP_EXPIRY_DAYS : -1));
   return expiryDate.toISOString();
 };
 
@@ -43,10 +46,10 @@ const getRandomSubset = (items, count) => {
 const generateFallbackWarungData = (lat, lng) => {
   const warungKeywords = ['warung', 'nasi', 'soto', 'bakso', 'mie', 'pecel', 'penyetan', 'ayam', 'tegal', 'bahari', 'kantin', 'bebek', 'warkop', 'kopi'];
   const cafeKeywords = ['cafe', 'coffee', 'bistro', 'lounge', 'resto', 'restaurant'];
-  const randomFallbackNames = getRandomSubset(FALLBACK_NAMES, 10);
+  const randomFallbackNames = getRandomSubset(FALLBACK_NAMES, FALLBACK_WARUNG_COUNT);
   const vipIndexes = new Set();
 
-  while (vipIndexes.size < 2) {
+  while (vipIndexes.size < FALLBACK_VIP_COUNT) {
     vipIndexes.add(Math.floor(Math.random() * randomFallbackNames.length));
   }
 
@@ -93,11 +96,11 @@ const generateFallbackWarungData = (lat, lng) => {
 const processElements = (elements, userCoords) => {
   const warungKeywords = ['warung', 'nasi', 'soto', 'bakso', 'mie', 'pecel', 'penyetan', 'ayam', 'tegal', 'bahari', 'kantin', 'bebek', 'warkop', 'kopi'];
   const cafeKeywords = ['cafe', 'coffee', 'bistro', 'lounge', 'resto', 'restaurant'];
+  const nonVipExpiry = generateVipExpiry(false);
 
   return elements.map((el) => {
     const name = el.tags?.name || 'Warung Rakyat';
     const lowerName = name.toLowerCase();
-    const vipExpiry = generateVipExpiry(false);
 
     let estPrice = 15000;
     let isWarung = false;
@@ -123,8 +126,8 @@ const processElements = (elements, userCoords) => {
       priceNum: estPrice,
       priceRange: `Rp ${(estPrice / 1000).toFixed(0)}k-an`,
       isWarung,
-      isVIP: isVipActive(false, vipExpiry),
-      vipExpiry,
+      isVIP: isVipActive(false, nonVipExpiry),
+      vipExpiry: nonVipExpiry,
       category: isWarung ? 'Makanan Berat' : 'Tempat Nongkrong',
       views: Math.floor(Math.random() * 500) + 12,
     };
