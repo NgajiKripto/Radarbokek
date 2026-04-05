@@ -103,7 +103,7 @@ const processElements = (elements, userCoords) => {
     const name = el.tags?.name || 'Warung Rakyat';
     const lowerName = name.toLowerCase();
     const rawIsVIP = el.tags?.isVIP === 'true' || el.tags?.is_vip === 'yes';
-    const vipExpiry = rawIsVIP ? (el.tags?.vipExpiry || el.tags?.vip_expiry || generateVipExpiry(true)) : generateVipExpiry(false);
+    const vipExpiry = rawIsVIP ? (el.tags?.vipExpiry || el.tags?.vip_expiry || generateVipExpiry(true)) : '';
 
     let estPrice = 15000;
     let isWarung = false;
@@ -139,10 +139,6 @@ const processElements = (elements, userCoords) => {
 
 const applyFiltersAndSort = (processed, budget) =>
   processed
-    .map(w => ({
-      ...w,
-      isVIP: isVipActive(w.isVIP, w.vipExpiry),
-    }))
     .filter(w => w.distanceNum <= 5 && w.priceNum <= parseInt(budget, 10))
     .sort((a, b) => {
       if (a.isVIP && !b.isVIP) return -1;
