@@ -29,10 +29,21 @@ const generateVipExpiry = (isVIP) => {
   return expiryDate.toISOString();
 };
 
+const getRandomSubset = (items, count) => {
+  const shuffled = [...items];
+
+  for (let i = shuffled.length - 1; i > 0; i -= 1) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+
+  return shuffled.slice(0, count);
+};
+
 const generateFallbackWarungData = (lat, lng) => {
   const warungKeywords = ['warung', 'nasi', 'soto', 'bakso', 'mie', 'pecel', 'penyetan', 'ayam', 'tegal', 'bahari', 'kantin', 'bebek', 'warkop', 'kopi'];
   const cafeKeywords = ['cafe', 'coffee', 'bistro', 'lounge', 'resto', 'restaurant'];
-  const randomFallbackNames = [...FALLBACK_NAMES].sort(() => Math.random() - 0.5).slice(0, 10);
+  const randomFallbackNames = getRandomSubset(FALLBACK_NAMES, 10);
   const vipIndexes = new Set();
 
   while (vipIndexes.size < 2) {
