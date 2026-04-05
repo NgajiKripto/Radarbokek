@@ -1,8 +1,12 @@
 import { useState } from 'react';
 import { Star, Loader2, CheckSquare } from 'lucide-react';
+import { MapContainer, TileLayer, Marker } from 'react-leaflet';
+import LocationPicker from '../ui/LocationPicker';
+
+const DEFAULT_COORDS = { lat: -7.2575, lng: 112.7521 };
 
 const UndangSection = () => {
-  const [undangForm, setUndangForm] = useState({ nama: '', menu: '', harga: '', link: '' });
+  const [undangForm, setUndangForm] = useState({ nama: '', menu: '', harga: '', coords: DEFAULT_COORDS });
   const [isUndangSubmitting, setIsUndangSubmitting] = useState(false);
   const [undangSuccess, setUndangSuccess] = useState(false);
   const totalBiayaUndang = parseInt(undangForm.harga) ? parseInt(undangForm.harga) + 7500 : 0;
@@ -10,7 +14,7 @@ const UndangSection = () => {
   const handleUndangSubmit = (e) => {
     e.preventDefault();
     setIsUndangSubmitting(true);
-    setTimeout(() => { setIsUndangSubmitting(false); setUndangSuccess(true); setUndangForm({ nama: '', menu: '', harga: '', link: '' }); setTimeout(() => setUndangSuccess(false), 5000); }, 1500);
+    setTimeout(() => { setIsUndangSubmitting(false); setUndangSuccess(true); setUndangForm({ nama: '', menu: '', harga: '', coords: DEFAULT_COORDS }); setTimeout(() => setUndangSuccess(false), 5000); }, 1500);
   };
 
   return (
@@ -45,8 +49,12 @@ const UndangSection = () => {
                 </div>
               </div>
               <div>
-                <label className="block text-[9px] font-black uppercase mb-1">Link Google Maps (WAJIB SURABAYA)</label>
-                <input type="url" required value={undangForm.link} onChange={(e) => setUndangForm({...undangForm, link: e.target.value})} placeholder="http://googleusercontent.com/maps.google.com/..." className="w-full border-2 border-black rounded-lg p-1.5 text-[10px] font-bold focus:bg-red-50 focus:-translate-y-0.5 transition-all outline-none placeholder:text-gray-400" />
+                <label className="block text-[9px] font-black uppercase mb-1">Lokasi Warung (WAJIB SURABAYA)</label>
+                <MapContainer center={[undangForm.coords.lat, undangForm.coords.lng]} zoom={13} className="w-full h-48 border-2 border-black rounded-lg z-0 relative">
+                  <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors' />
+                  <LocationPicker onLocationSelect={(coords) => setUndangForm({...undangForm, coords})} />
+                  <Marker position={[undangForm.coords.lat, undangForm.coords.lng]} />
+                </MapContainer>
               </div>
 
               {/* KALKULATOR BIAYA LIVE */}

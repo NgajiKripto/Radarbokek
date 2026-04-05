@@ -1,11 +1,16 @@
 import { useReducer } from 'react';
 import { Loader2, CheckSquare } from 'lucide-react';
+import { MapContainer, TileLayer, Marker } from 'react-leaflet';
+import LocationPicker from '../ui/LocationPicker';
 
-const initialFormState = { namaTempat: '', menuTermurah: '', hargaTermurah: '', jamBuka: '', linkMaps: '', isSubmitting: false, success: false };
+const DEFAULT_COORDS = { lat: -7.2575, lng: 112.7521 };
+
+const initialFormState = { namaTempat: '', menuTermurah: '', hargaTermurah: '', jamBuka: '', coords: DEFAULT_COORDS, isSubmitting: false, success: false };
 
 const formReducer = (state, action) => {
   switch(action.type) {
     case 'UPDATE_FIELD': return { ...state, [action.field]: action.value };
+    case 'UPDATE_COORDS': return { ...state, coords: action.coords };
     case 'SUBMIT_START': return { ...state, isSubmitting: true };
     case 'SUBMIT_SUCCESS': return { ...initialFormState, success: true };
     case 'RESET_SUCCESS': return { ...state, success: false };
@@ -39,7 +44,13 @@ const LaporSection = () => {
                 <div><input type="text" required value={formState.menuTermurah} onChange={(e) => dispatch({ type: 'UPDATE_FIELD', field: 'menuTermurah', value: e.target.value })} placeholder="Menu Andalan" className="w-full border-2 border-black rounded-lg p-1.5 text-[10px] font-bold focus:bg-blue-50 focus:translate-x-0.5 focus:shadow-[-2px_2px_0px_#000] transition-all outline-none placeholder:text-gray-400" /></div>
                 <div><input type="number" required value={formState.hargaTermurah} onChange={(e) => dispatch({ type: 'UPDATE_FIELD', field: 'hargaTermurah', value: e.target.value })} placeholder="Harga (Cth: 10000)" className="w-full border-2 border-black rounded-lg p-1.5 text-[10px] font-bold focus:bg-blue-50 focus:translate-x-0.5 focus:shadow-[-2px_2px_0px_#000] transition-all outline-none placeholder:text-gray-400" /></div>
               </div>
-              <div><input type="url" required value={formState.linkMaps} onChange={(e) => dispatch({ type: 'UPDATE_FIELD', field: 'linkMaps', value: e.target.value })} placeholder="Link Google Maps..." className="w-full border-2 border-black rounded-lg p-1.5 text-[10px] font-bold focus:bg-blue-50 focus:translate-x-0.5 focus:shadow-[-2px_2px_0px_#000] transition-all outline-none placeholder:text-gray-400" /></div>
+              <div>
+                <MapContainer center={[formState.coords.lat, formState.coords.lng]} zoom={13} className="w-full h-48 border-2 border-black rounded-lg z-0 relative">
+                  <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors' />
+                  <LocationPicker onLocationSelect={(coords) => dispatch({ type: 'UPDATE_COORDS', coords })} />
+                  <Marker position={[formState.coords.lat, formState.coords.lng]} />
+                </MapContainer>
+              </div>
               <button type="submit" disabled={formState.isSubmitting} className="w-full bg-black text-white hover:bg-gray-800 rounded-xl font-black text-sm py-2 mt-2 border-2 border-black shadow-[2px_2px_0px_#fff] hover:-translate-y-0.5 hover:shadow-[4px_4px_0px_#fff] active:shadow-none active:translate-x-[2px] active:translate-y-[2px] flex items-center justify-center gap-1.5 transition-all uppercase">
                 {formState.isSubmitting ? <Loader2 className="w-3 h-3 animate-spin" /> : 'KIRIM DATA GRATIS'}
               </button>
