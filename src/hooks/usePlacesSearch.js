@@ -21,14 +21,16 @@ const FALLBACK_NAMES = [
 
 const isVipActive = (isVIP, vipExpiry) => {
   if (!isVIP) return false;
+  if (!vipExpiry) return false;
   const expiryDate = new Date(vipExpiry);
   if (Number.isNaN(expiryDate.getTime())) return false;
   return new Date() <= expiryDate;
 };
 
 const generateVipExpiry = (isVIP) => {
+  if (!isVIP) return '';
   const expiryDate = new Date();
-  expiryDate.setDate(expiryDate.getDate() + (isVIP ? VIP_EXPIRY_DAYS : -1));
+  expiryDate.setDate(expiryDate.getDate() + VIP_EXPIRY_DAYS);
   return expiryDate.toISOString();
 };
 
@@ -96,11 +98,12 @@ const generateFallbackWarungData = (lat, lng) => {
 const processElements = (elements, userCoords) => {
   const warungKeywords = ['warung', 'nasi', 'soto', 'bakso', 'mie', 'pecel', 'penyetan', 'ayam', 'tegal', 'bahari', 'kantin', 'bebek', 'warkop', 'kopi'];
   const cafeKeywords = ['cafe', 'coffee', 'bistro', 'lounge', 'resto', 'restaurant'];
-  const nonVipExpiry = generateVipExpiry(false);
 
   return elements.map((el) => {
     const name = el.tags?.name || 'Warung Rakyat';
     const lowerName = name.toLowerCase();
+    const rawIsVIP = el.tags?.isVIP === 'true' || el.tags?.is_vip === 'yes';
+    const vipExpiry = rawIsVIP ? (el.tags?.vipExpiry || el.tags?.vip_expiry || generateVipExpiry(true)) : generateVipExpiry(false);
 
     let estPrice = 15000;
     let isWarung = false;
@@ -126,8 +129,8 @@ const processElements = (elements, userCoords) => {
       priceNum: estPrice,
       priceRange: `Rp ${(estPrice / 1000).toFixed(0)}k-an`,
       isWarung,
-      isVIP: isVipActive(false, nonVipExpiry),
-      vipExpiry: nonVipExpiry,
+      isVIP: isVipActive(rawIsVIP, vipExpiry),
+      vipExpiry,
       category: isWarung ? 'Makanan Berat' : 'Tempat Nongkrong',
       views: Math.floor(Math.random() * 500) + 12,
     };
