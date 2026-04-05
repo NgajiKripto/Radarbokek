@@ -8,6 +8,9 @@ const OVERPASS_ENDPOINTS = [
 ];
 
 const FETCH_TIMEOUT_MS = 8000;
+const VIP_EXPIRY_DAYS = 14;
+const FALLBACK_WARUNG_COUNT = 10;
+const FALLBACK_VIP_COUNT = 2;
 
 const FALLBACK_NAMES = [
   'Warung Bu Sari', 'Warung Nasi Pak Budi', 'Warung Mie Ayam Joss',
@@ -16,14 +19,48 @@ const FALLBACK_NAMES = [
   'Resto Bebek Goreng H. Slamet', 'Warung Tegal Mbak Yem', 'Warung Ayam Penyet Cak Bro',
 ];
 
+const isVipActive = (isVIP, vipExpiry) => {
+  if (!isVIP) return false;
+  if (!vipExpiry) return false;
+  const expiryDate = new Date(vipExpiry);
+  if (Number.isNaN(expiryDate.getTime())) return false;
+  return new Date() <= expiryDate;
+};
+
+const generateVipExpiry = (isVIP) => {
+  if (!isVIP) return '';
+  const expiryDate = new Date();
+  expiryDate.setDate(expiryDate.getDate() + VIP_EXPIRY_DAYS);
+  return expiryDate.toISOString();
+};
+
+const getRandomSubset = (items, count) => {
+  const shuffled = [...items];
+
+  for (let i = shuffled.length - 1; i > 0; i -= 1) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+
+  return shuffled.slice(0, count);
+};
+
 const generateFallbackWarungData = (lat, lng) => {
   const warungKeywords = ['warung', 'nasi', 'soto', 'bakso', 'mie', 'pecel', 'penyetan', 'ayam', 'tegal', 'bahari', 'kantin', 'bebek', 'warkop', 'kopi'];
   const cafeKeywords = ['cafe', 'coffee', 'bistro', 'lounge', 'resto', 'restaurant'];
+  const randomFallbackNames = getRandomSubset(FALLBACK_NAMES, FALLBACK_WARUNG_COUNT);
+  const vipIndexes = new Set();
 
-  return FALLBACK_NAMES.map((name, i) => {
+  while (vipIndexes.size < FALLBACK_VIP_COUNT) {
+    vipIndexes.add(Math.floor(Math.random() * randomFallbackNames.length));
+  }
+
+  return randomFallbackNames.map((name, i) => {
     const lowerName = name.toLowerCase();
     let estPrice = 15000;
     let isWarung = false;
+    const rawIsVIP = vipIndexes.has(i);
+    const vipExpiry = generateVipExpiry(rawIsVIP);
 
     if (warungKeywords.some(key => lowerName.includes(key))) {
       estPrice = 8000;
@@ -50,6 +87,8 @@ const generateFallbackWarungData = (lat, lng) => {
       priceNum: estPrice,
       priceRange: `Rp ${(estPrice / 1000).toFixed(0)}k-an`,
       isWarung,
+      isVIP: isVipActive(rawIsVIP, vipExpiry),
+      vipExpiry,
       category: isWarung ? 'Makanan Berat' : 'Tempat Nongkrong',
       views: Math.floor(Math.random() * 500) + 12,
     };
@@ -63,6 +102,8 @@ const processElements = (elements, userCoords) => {
   return elements.map((el) => {
     const name = el.tags?.name || 'Warung Rakyat';
     const lowerName = name.toLowerCase();
+    const rawIsVIP = el.tags?.isVIP === 'true' || el.tags?.is_vip === 'yes';
+    const vipExpiry = rawIsVIP ? (el.tags?.vipExpiry || el.tags?.vip_expiry || generateVipExpiry(true)) : '';
 
     let estPrice = 15000;
     let isWarung = false;
@@ -88,6 +129,8 @@ const processElements = (elements, userCoords) => {
       priceNum: estPrice,
       priceRange: `Rp ${(estPrice / 1000).toFixed(0)}k-an`,
       isWarung,
+      isVIP: isVipActive(rawIsVIP, vipExpiry),
+      vipExpiry,
       category: isWarung ? 'Makanan Berat' : 'Tempat Nongkrong',
       views: Math.floor(Math.random() * 500) + 12,
     };
@@ -96,10 +139,10 @@ const processElements = (elements, userCoords) => {
 
 const applyFiltersAndSort = (processed, budget) =>
   processed
-    .filter(w => w.distanceNum <= 5 && w.priceNum <= parseInt(budget))
+    .filter(w => w.distanceNum <= 5 && w.priceNum <= parseInt(budget, 10))
     .sort((a, b) => {
-      if (a.isWarung && !b.isWarung) return -1;
-      if (!a.isWarung && b.isWarung) return 1;
+      if (a.isVIP && !b.isVIP) return -1;
+      if (!a.isVIP && b.isVIP) return 1;
       return a.distanceNum - b.distanceNum;
     })
     .slice(0, 20);

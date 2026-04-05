@@ -51,6 +51,11 @@ const ScannerSection = ({
               <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
                 {filteredResults.map((resto, index) => (
                   <li key={resto.id} onClick={() => onRestoClick(resto)} className="bg-white p-3 border-2 border-black rounded-xl shadow-[2px_2px_0px_#000] hover:-translate-y-1 hover:shadow-[4px_4px_0px_#000] active:translate-y-0 active:shadow-none transition-all cursor-pointer flex flex-col justify-between group" style={{ animation: `slideUp 0.3s ease-out ${index * 0.05}s both` }}>
+                    {resto.isVIP ? (
+                      <span className="inline-flex w-fit items-center bg-yellow-300 text-black text-[8px] font-black px-2 py-0.5 border-2 border-black rounded-full mb-2">
+                        ⭐ VIP ADMIN
+                      </span>
+                    ) : null}
                     <div className="flex justify-between items-start border-b border-black border-dashed pb-1.5 mb-2 pr-8">
                       <h3 className="font-black text-[10px] md:text-xs uppercase leading-tight m-0 group-hover:text-red-600 transition-colors">{resto.name}</h3>
                       <span className="bg-black text-yellow-300 text-[8px] font-black px-1.5 py-0.5 absolute top-2 right-2 border border-black rounded-md">{resto.distance}</span>
