@@ -22,14 +22,14 @@ const generateFallbackWarungData = (lat, lng) => {
 
   return FALLBACK_NAMES.map((name, i) => {
     const lowerName = name.toLowerCase();
-    let estPrice = 18000;
+    let estPrice = 15000;
     let isWarung = false;
 
     if (warungKeywords.some(key => lowerName.includes(key))) {
-      estPrice = 12000;
+      estPrice = 8000;
       isWarung = true;
     } else if (cafeKeywords.some(key => lowerName.includes(key))) {
-      estPrice = 28000;
+      estPrice = 25000;
     }
 
     // ~0.018 degrees ≈ 2 km; multiply by 2 to span [-2 km, +2 km]
@@ -64,14 +64,14 @@ const processElements = (elements, userCoords) => {
     const name = el.tags?.name || 'Warung Rakyat';
     const lowerName = name.toLowerCase();
 
-    let estPrice = 18000;
+    let estPrice = 15000;
     let isWarung = false;
 
     if (warungKeywords.some(key => lowerName.includes(key))) {
-      estPrice = 12000;
+      estPrice = 8000;
       isWarung = true;
     } else if (cafeKeywords.some(key => lowerName.includes(key))) {
-      estPrice = 28000;
+      estPrice = 25000;
     }
 
     const placeLat = el.lat || el.center?.lat;
