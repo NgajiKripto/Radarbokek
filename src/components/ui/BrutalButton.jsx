@@ -17,7 +17,7 @@ const BrutalButton = ({
     const IconComponent = icon;
     return (
       <span className="brutal-button__icon">
-        <IconComponent className="w-4 h-4" />
+        <IconComponent />
       </span>
     );
   };
