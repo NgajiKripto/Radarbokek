@@ -1,5 +1,4 @@
 import { MapPin, Search, Loader2, AlertTriangle } from 'lucide-react';
-import BrutalButton from '../ui/BrutalButton';
 
 const ScannerSection = ({
   geoError, searchError,
@@ -31,14 +30,10 @@ const ScannerSection = ({
             </div>
           </div>
 
-          <BrutalButton
-            type="submit"
-            disabled={isLoadingData}
-            icon={isLoadingData ? <Loader2 className="w-4 h-4 animate-spin" /> : <Search className="w-4 h-4" />}
-            className="text-sm md:text-base"
-          >
+          <button type="submit" disabled={isLoadingData} className="w-full bg-red-500 hover:bg-red-600 text-white font-black text-sm md:text-base py-2 border-2 border-black rounded-xl shadow-[4px_4px_0px_#000] hover:-translate-y-0.5 hover:shadow-[6px_6px_0px_#000] active:shadow-none active:translate-x-[2px] active:translate-y-[2px] flex items-center justify-center gap-1.5 transition-all uppercase">
+            {isLoadingData ? <Loader2 className="w-4 h-4 animate-spin" /> : <Search className="w-4 h-4" />}
             {isLoadingData ? 'SCANNING...' : 'GAS CARI!'}
-          </BrutalButton>
+          </button>
         </form>
       </div>
 
