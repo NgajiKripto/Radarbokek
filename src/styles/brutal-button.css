@@ -148,3 +148,17 @@
     opacity: 0;
   }
 }
+
+@media (prefers-reduced-motion: reduce) {
+  .brutal-button,
+  .brutal-button:hover:not(:disabled),
+  .brutal-button:active:not(:disabled) {
+    transition: none;
+    transform: none;
+  }
+
+  .brutal-button__dot {
+    animation: none;
+    opacity: 0;
+  }
+}
