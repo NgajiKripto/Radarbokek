@@ -7,7 +7,7 @@
   --brutal-white: #ffffff;
 }
 
-.brutal-btn-uiverse {
+.brutal-button {
   position: relative;
   display: inline-flex;
   align-items: center;
@@ -28,40 +28,40 @@
   cursor: pointer;
 }
 
-.brutal-btn-uiverse:hover:not(:disabled) {
+.brutal-button:hover:not(:disabled) {
   transform: translateY(-2px);
   box-shadow: 6px 6px 0 var(--brutal-black);
   filter: saturate(1.05);
 }
 
-.brutal-btn-uiverse:active:not(:disabled) {
+.brutal-button:active:not(:disabled) {
   transform: translate(2px, 2px);
   box-shadow: 0 0 0 var(--brutal-black);
 }
 
-.brutal-btn-uiverse:focus-visible {
+.brutal-button:focus-visible {
   outline: 3px solid var(--brutal-yellow-400);
   outline-offset: 2px;
 }
 
-.brutal-btn-uiverse:disabled {
+.brutal-button:disabled {
   opacity: 0.75;
   cursor: not-allowed;
 }
 
-.brutal-btn-uiverse__dots-border {
+.brutal-button__dots-border {
   pointer-events: none;
   position: absolute;
   inset: 0;
   border-radius: inherit;
 }
 
-.brutal-btn-uiverse__dots {
+.brutal-button__dots {
   position: absolute;
   inset: 0;
 }
 
-.brutal-btn-uiverse__dot {
+.brutal-button__dot {
   position: absolute;
   top: -10px;
   width: 6px;
@@ -72,47 +72,47 @@
   animation: dots 2.6s linear infinite;
 }
 
-.brutal-btn-uiverse__dot:nth-child(1) {
+.brutal-button__dot:nth-child(1) {
   left: 8%;
   animation-delay: 0s;
 }
 
-.brutal-btn-uiverse__dot:nth-child(2) {
+.brutal-button__dot:nth-child(2) {
   left: 20%;
   animation-delay: 0.25s;
 }
 
-.brutal-btn-uiverse__dot:nth-child(3) {
+.brutal-button__dot:nth-child(3) {
   left: 32%;
   animation-delay: 0.5s;
 }
 
-.brutal-btn-uiverse__dot:nth-child(4) {
+.brutal-button__dot:nth-child(4) {
   left: 44%;
   animation-delay: 0.75s;
 }
 
-.brutal-btn-uiverse__dot:nth-child(5) {
+.brutal-button__dot:nth-child(5) {
   left: 56%;
   animation-delay: 1s;
 }
 
-.brutal-btn-uiverse__dot:nth-child(6) {
+.brutal-button__dot:nth-child(6) {
   left: 68%;
   animation-delay: 1.25s;
 }
 
-.brutal-btn-uiverse__dot:nth-child(7) {
+.brutal-button__dot:nth-child(7) {
   left: 80%;
   animation-delay: 1.5s;
 }
 
-.brutal-btn-uiverse__dot:nth-child(8) {
+.brutal-button__dot:nth-child(8) {
   left: 92%;
   animation-delay: 1.75s;
 }
 
-.brutal-btn-uiverse__content {
+.brutal-button__content {
   position: relative;
   z-index: 1;
   display: inline-flex;
@@ -121,13 +121,13 @@
   gap: 0.375rem;
 }
 
-.brutal-btn-uiverse__icon {
+.brutal-button__icon {
   display: inline-flex;
   align-items: center;
   justify-content: center;
 }
 
-.brutal-btn-uiverse__icon > svg {
+.brutal-button__icon > svg {
   width: 1rem;
   height: 1rem;
 }
@@ -150,14 +150,14 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .brutal-btn-uiverse,
-  .brutal-btn-uiverse:hover:not(:disabled),
-  .brutal-btn-uiverse:active:not(:disabled) {
+  .brutal-button,
+  .brutal-button:hover:not(:disabled),
+  .brutal-button:active:not(:disabled) {
     transition: none;
     transform: none;
   }
 
-  .brutal-btn-uiverse__dot {
+  .brutal-button__dot {
     animation: none;
     opacity: 0;
   }
