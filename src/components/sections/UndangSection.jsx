@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { Star, Loader2, CheckSquare } from 'lucide-react';
 import { MapContainer, TileLayer, Marker } from 'react-leaflet';
 import LocationPicker from '../ui/LocationPicker';
-import { BrutalButton } from '../ui/BrutalButton';
 
 const DEFAULT_COORDS = { lat: -7.2575, lng: 112.7521 };
 
@@ -67,13 +66,9 @@ const UndangSection = () => {
                  <div className="flex justify-between text-[11px] font-black border-t border-dashed border-black pt-1"><span>TOTAL BAYAR:</span><span className="text-red-600">Rp {totalBiayaUndang.toLocaleString('id-ID')}</span></div>
               </div>
 
-              <BrutalButton
-                type="submit"
-                disabled={isUndangSubmitting || !undangForm.harga}
-                icon={isUndangSubmitting ? <Loader2 className="w-4 h-4 animate-spin" /> : null}
-              >
-                {isUndangSubmitting ? 'MEMPROSES...' : 'BAYAR SEKARANG!'}
-              </BrutalButton>
+              <button type="submit" disabled={isUndangSubmitting || !undangForm.harga} className={`w-full rounded-xl text-white font-black text-sm py-2 mt-2 border-2 border-black flex items-center justify-center gap-1.5 transition-all uppercase ${!undangForm.harga ? 'bg-gray-400 cursor-not-allowed' : 'bg-black shadow-[2px_2px_0px_#fff] hover:-translate-y-0.5 hover:shadow-[4px_4px_0px_#fff] active:shadow-none active:translate-x-[2px] active:translate-y-[2px]'}`}>
+                {isUndangSubmitting ? <Loader2 className="w-4 h-4 animate-spin" /> : 'BAYAR SEKARANG!'}
+              </button>
             </form>
           )}
         </div>

@@ -1,5 +1,5 @@
 import { MapPin, Search, Loader2, AlertTriangle } from 'lucide-react';
-import { BrutalButton } from '../ui/BrutalButton';
+import BrutalButton from '../ui/BrutalButton';
 
 const ScannerSection = ({
   geoError, searchError,
