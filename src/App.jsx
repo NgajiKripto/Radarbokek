@@ -45,11 +45,13 @@ export default function App() {
 
   useEffect(() => {
     if (!navigator.geolocation) return;
+    if (!navigator.permissions) {
+      Promise.resolve().then(() => setShowLocationModal(true));
+      return;
+    }
     navigator.permissions.query({ name: 'geolocation' }).then((result) => {
       if (result.state === 'prompt') setShowLocationModal(true);
-    }).catch(() => {
-      setShowLocationModal(true);
-    });
+    }).catch(() => {});
   }, []);
 
   const handleSearchSubmit = (e) => {
