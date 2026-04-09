@@ -72,7 +72,7 @@ const UndangSection = () => {
               </div>
               {/* METODE PEMBAYARAN */}
               <div>
-                <label className="block text-[9px] font-black uppercase mb-1">Metode Pembayaran Admin</label>
+                <label className="block text-[9px] font-black uppercase mb-1">Metode Pembayaran yang Disediakan</label>
                 <div className="flex gap-2">
                   <button
                     type="button"
