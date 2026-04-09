@@ -4,6 +4,9 @@ import { MapContainer, TileLayer, Marker, useMap } from 'react-leaflet';
 import LocationPicker from '../ui/LocationPicker';
 
 const DEFAULT_COORDS = { lat: -7.2575, lng: 112.7521 };
+const AUTO_LOCATION_ZOOM = 16;
+const FLY_ANIMATION_DURATION = 1;
+const SUCCESS_MESSAGE_DURATION = 3000;
 
 const initialFormState = { namaTempat: '', menuTermurah: '', hargaTermurah: '', jamBuka: '', coords: DEFAULT_COORDS, isSubmitting: false, success: false };
 
@@ -21,7 +24,7 @@ const formReducer = (state, action) => {
 const FlyToCoords = ({ coords }) => {
   const map = useMap();
   useEffect(() => {
-    map.flyTo([coords.lat, coords.lng], 16, { duration: 1 });
+    map.flyTo([coords.lat, coords.lng], AUTO_LOCATION_ZOOM, { duration: FLY_ANIMATION_DURATION });
   }, [map, coords]);
   return null;
 };
@@ -30,12 +33,14 @@ const LaporSection = () => {
   const [formState, dispatch] = useReducer(formReducer, initialFormState);
   const [isDetecting, setIsDetecting] = useState(false);
   const [gpsSuccess, setGpsSuccess] = useState(false);
+  const [gpsError, setGpsError] = useState('');
   const [flyTarget, setFlyTarget] = useState(null);
 
   const handleAutoLocation = () => {
     if (!navigator.geolocation) return;
     setIsDetecting(true);
     setGpsSuccess(false);
+    setGpsError('');
     navigator.geolocation.getCurrentPosition(
       (position) => {
         const coords = { lat: position.coords.latitude, lng: position.coords.longitude };
@@ -43,10 +48,15 @@ const LaporSection = () => {
         setFlyTarget(coords);
         setIsDetecting(false);
         setGpsSuccess(true);
-        setTimeout(() => setGpsSuccess(false), 3000);
+        setTimeout(() => setGpsSuccess(false), SUCCESS_MESSAGE_DURATION);
       },
-      () => {
+      (err) => {
         setIsDetecting(false);
+        if (err.code === err.PERMISSION_DENIED) {
+          setGpsError('Izin lokasi ditolak. Aktifkan GPS di pengaturan browser.');
+        } else {
+          setGpsError('Gagal mendeteksi lokasi. Coba lagi.');
+        }
       },
       { enableHighAccuracy: true, timeout: 10000 }
     );
@@ -91,6 +101,9 @@ const LaporSection = () => {
                   <p className="text-[9px] font-bold text-green-700 mb-1 flex items-center gap-1">
                     <CheckSquare className="w-3 h-3" /> Lokasi berhasil dikunci! Geser pin jika perlu.
                   </p>
+                )}
+                {gpsError && (
+                  <p className="text-[9px] font-bold text-red-600 mb-1">{gpsError}</p>
                 )}
                 <MapContainer center={[formState.coords.lat, formState.coords.lng]} zoom={13} className="w-full h-48 border-2 border-black rounded-lg z-0 relative">
                   <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors' />
