@@ -1,5 +1,5 @@
 const HeroSection = () => (
-  <section id="home" className="w-full pt-10 pb-6">
+  <section id="home" className="w-full pt-10 pb-6 border-b-2 border-black">
     <div className="max-w-4xl mx-auto px-5 sm:px-8 text-center group cursor-default">
       <h1 className="text-2xl md:text-4xl font-black uppercase leading-none tracking-tighter mb-1.5 transition-transform duration-300 group-hover:scale-[1.02]">
         RADAR BOKEK<br/>
