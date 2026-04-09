@@ -2,7 +2,6 @@ import { useReducer } from 'react';
 import { Loader2, CheckSquare } from 'lucide-react';
 import { MapContainer, TileLayer, Marker } from 'react-leaflet';
 import LocationPicker from '../ui/LocationPicker';
-import ScallopedDivider from '../ui/ScallopedDivider';
 
 const DEFAULT_COORDS = { lat: -7.2575, lng: 112.7521 };
 
@@ -23,8 +22,7 @@ const LaporSection = () => {
   const [formState, dispatch] = useReducer(formReducer, initialFormState);
 
   return (
-    <section id="lapor" className="w-full bg-white py-12 scroll-mt-16">
-      <ScallopedDivider color="#FFFFFF" flip={true} />
+    <section id="lapor" className="w-full bg-white py-12 border-b-2 border-black scroll-mt-16">
       <div className="max-w-4xl mx-auto px-5 sm:px-8">
         <div className="max-w-xl mx-auto bg-white p-5 md:p-6 border-2 border-black rounded-2xl shadow-[4px_4px_0px_#000] relative hover:shadow-[6px_6px_0px_#000] transition-shadow">
           <div className="absolute -top-3 right-3 bg-blue-500 text-white rounded-full px-2 py-0.5 border-2 border-black text-[9px] font-black rotate-[5deg] uppercase flex items-center gap-1 shadow-[2px_2px_0px_#000]"><CheckSquare className="w-3 h-3" /> GRATIS</div>

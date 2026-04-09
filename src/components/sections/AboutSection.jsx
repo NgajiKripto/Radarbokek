@@ -1,10 +1,8 @@
 import { Zap, MapPin } from 'lucide-react';
-import ScallopedDivider from '../ui/ScallopedDivider';
 
 const AboutSection = () => (
   <div id="about" className="scroll-mt-16">
-    <ScallopedDivider color="#4DEEEA" flip={true} />
-    <section className="w-full bg-[#4DEEEA] py-10">
+    <section className="w-full bg-[#4DEEEA] py-10 border-y-2 border-black">
       <div className="max-w-4xl mx-auto px-5 sm:px-8">
         <div className="text-center mb-8">
           <h2 className="text-sm md:text-base font-black uppercase inline-block bg-white px-3 py-1.5 border-2 border-black shadow-[2px_2px_0px_#000] rounded-lg rotate-[-1deg] hover:rotate-0 transition-transform">MASALAH HIDUP LO 🤯</h2>

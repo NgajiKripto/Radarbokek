@@ -1,9 +1,7 @@
 import { HelpCircle } from 'lucide-react';
-import ScallopedDivider from '../ui/ScallopedDivider';
 
 const FaqSection = () => (
-  <section id="faq" className="w-full bg-blue-400 py-12 scroll-mt-16">
-    <ScallopedDivider color="#60A5FA" flip={true} />
+  <section id="faq" className="w-full bg-blue-400 py-12 border-b-2 border-black scroll-mt-16">
     <div className="max-w-4xl mx-auto px-5 sm:px-8 text-center">
       <div className="mb-6">
         <h2 className="text-sm md:text-base font-black uppercase text-white bg-black inline-block px-3 py-1.5 rounded-lg rotate-[-1deg] shadow-[2px_2px_0px_#FFF] tracking-tight hover:rotate-1 transition-transform">FAQ WARGA BOKEK</h2>

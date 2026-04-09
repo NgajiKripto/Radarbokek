@@ -1,6 +1,5 @@
 import { MapPin, Search, Loader2, AlertTriangle } from 'lucide-react';
 import BrutalButton from '../ui/BrutalButton';
-import ScallopedDivider from '../ui/ScallopedDivider';
 
 const ScannerSection = ({
   geoError, searchError,
@@ -10,7 +9,6 @@ const ScannerSection = ({
   onSearchSubmit, onRestoClick,
 }) => (
   <section id="scanner" className="w-full pb-12 scroll-mt-20">
-    <ScallopedDivider color="#60A5FA" flip={true} />
     <div className="max-w-4xl mx-auto px-5 sm:px-8">
       <div className="max-w-md mx-auto bg-[#FF90E8] p-3 md:p-4 border-2 border-black rounded-2xl shadow-[4px_4px_0px_#000] hover:shadow-[6px_6px_0px_#000] transition-all relative">
         <form onSubmit={onSearchSubmit} className="space-y-3">
