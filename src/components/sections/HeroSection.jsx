@@ -18,7 +18,7 @@ const HeroSection = () => (
     <div className="max-w-4xl mx-auto px-5 sm:px-8 text-center group cursor-default">
       <h1 className="text-2xl md:text-4xl font-black uppercase leading-none tracking-tighter mb-1.5 transition-transform duration-300 group-hover:scale-[1.02]">
         RADAR BOKEK<br/>
-        <span className="text-red-500 bg-yellow-300 px-2 py-0.5 border-2 border-black md:rotate-1 inline-block mt-2 shadow-[2px_2px_0px_#000] text-sm md:text-xl group-hover:rotate-0 transition-all rounded-lg">
+        <span className="text-[#FFFDF5] bg-black px-2 py-0.5 border-2 border-black md:rotate-1 inline-block mt-2 shadow-[4px_4px_0px_rgba(0,0,0,0.3)] text-sm md:text-xl group-hover:rotate-0 transition-all rounded-lg">
           Selamatkan isi Dompet
         </span>
       </h1>
