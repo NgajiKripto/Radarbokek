@@ -13,6 +13,7 @@ import BackToTop from './components/ui/BackToTop';
 import AdModal from './components/modals/AdModal';
 import RestoModal from './components/modals/RestoModal';
 import StickyAd from './components/modals/StickyAd';
+import LocationPermissionModal from './components/modals/LocationPermissionModal';
 
 import HeroSection from './components/sections/HeroSection';
 import ScannerSection from './components/sections/ScannerSection';
@@ -31,6 +32,7 @@ export default function App() {
   const [showAdModal, setShowAdModal] = useState(false);
   const [adCountdown, setAdCountdown] = useState(0);
   const [showStickyAd, setShowStickyAd] = useState(true);
+  const [showLocationModal, setShowLocationModal] = useState(false);
 
   const { locationName, userCoords, isLocating, geoError, getLocation } = useGeolocation();
   const { filteredResults, isSearching, isLoadingData, searchError, search } = usePlacesSearch();
@@ -40,6 +42,17 @@ export default function App() {
     let t; if (showAdModal && adCountdown > 0) t = setTimeout(() => setAdCountdown(c => c - 1), 1000);
     return () => clearTimeout(t);
   }, [showAdModal, adCountdown]);
+
+  useEffect(() => {
+    if (!navigator.geolocation) return;
+    if (!navigator.permissions) {
+      Promise.resolve().then(() => setShowLocationModal(true));
+      return;
+    }
+    navigator.permissions.query({ name: 'geolocation' }).then((result) => {
+      if (result.state === 'prompt') setShowLocationModal(true);
+    }).catch(() => {});
+  }, []);
 
   const handleSearchSubmit = (e) => {
     e.preventDefault();
@@ -59,6 +72,13 @@ export default function App() {
     <div className="min-h-screen bg-[#FFFDF5] font-mono text-black selection:bg-red-400 flex flex-col relative overflow-x-hidden text-sm pb-20">
 
       <ScrollDots scrollProgress={scrollProgress} />
+
+      {showLocationModal && (
+        <LocationPermissionModal
+          onAllow={() => { setShowLocationModal(false); getLocation(); }}
+          onDismiss={() => setShowLocationModal(false)}
+        />
+      )}
 
       <AdModal showAdModal={showAdModal} adCountdown={adCountdown} onClose={() => setShowAdModal(false)} />
 
