@@ -79,11 +79,20 @@ const LaporSection = () => {
             <form onSubmit={(e) => {
               e.preventDefault(); dispatch({ type: 'SUBMIT_START' });
               setTimeout(() => { dispatch({ type: 'SUBMIT_SUCCESS' }); setTimeout(() => dispatch({ type: 'RESET_SUCCESS' }), 5000); }, 1500); 
-            }} className="space-y-3">
-              <div><input type="text" required value={formState.namaTempat} onChange={(e) => dispatch({ type: 'UPDATE_FIELD', field: 'namaTempat', value: e.target.value })} placeholder="Nama Warung (Cth: Nasi Goreng Gila)" className="w-full border-2 border-black rounded-lg p-1.5 text-[10px] font-bold focus:bg-blue-50 focus:translate-x-0.5 focus:shadow-[-2px_2px_0px_#000] transition-all outline-none placeholder:text-gray-400" /></div>
+            }} className="space-y-4">
+              <div>
+                <label className="block text-[9px] font-black uppercase mb-1">Nama Warung</label>
+                <input type="text" required value={formState.namaTempat} onChange={(e) => dispatch({ type: 'UPDATE_FIELD', field: 'namaTempat', value: e.target.value })} placeholder="Nama Warung (Cth: Nasi Goreng Gila)" className="w-full border-2 border-black rounded-xl p-3 text-[10px] font-bold shadow-[4px_4px_0px_#000] bg-white focus:bg-blue-50 focus:-translate-y-0.5 transition-all outline-none placeholder:text-gray-400" />
+              </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                <div><input type="text" required value={formState.menuTermurah} onChange={(e) => dispatch({ type: 'UPDATE_FIELD', field: 'menuTermurah', value: e.target.value })} placeholder="Menu Andalan" className="w-full border-2 border-black rounded-lg p-1.5 text-[10px] font-bold focus:bg-blue-50 focus:translate-x-0.5 focus:shadow-[-2px_2px_0px_#000] transition-all outline-none placeholder:text-gray-400" /></div>
-                <div><input type="number" required value={formState.hargaTermurah} onChange={(e) => dispatch({ type: 'UPDATE_FIELD', field: 'hargaTermurah', value: e.target.value })} placeholder="Harga (Cth: 10000)" className="w-full border-2 border-black rounded-lg p-1.5 text-[10px] font-bold focus:bg-blue-50 focus:translate-x-0.5 focus:shadow-[-2px_2px_0px_#000] transition-all outline-none placeholder:text-gray-400" /></div>
+                <div>
+                  <label className="block text-[9px] font-black uppercase mb-1">Menu Andalan</label>
+                  <input type="text" required value={formState.menuTermurah} onChange={(e) => dispatch({ type: 'UPDATE_FIELD', field: 'menuTermurah', value: e.target.value })} placeholder="Menu Andalan" className="w-full border-2 border-black rounded-xl p-3 text-[10px] font-bold shadow-[4px_4px_0px_#000] bg-white focus:bg-blue-50 focus:-translate-y-0.5 transition-all outline-none placeholder:text-gray-400" />
+                </div>
+                <div>
+                  <label className="block text-[9px] font-black uppercase mb-1">Harga (Rp)</label>
+                  <input type="number" required value={formState.hargaTermurah} onChange={(e) => dispatch({ type: 'UPDATE_FIELD', field: 'hargaTermurah', value: e.target.value })} placeholder="Harga (Cth: 10000)" className="w-full border-2 border-black rounded-xl p-3 text-[10px] font-bold shadow-[4px_4px_0px_#000] bg-white focus:bg-blue-50 focus:-translate-y-0.5 transition-all outline-none placeholder:text-gray-400" />
+                </div>
               </div>
               <div>
                 <div className="flex items-center justify-between mb-1.5">
@@ -99,7 +108,7 @@ const LaporSection = () => {
                 </div>
                 {gpsSuccess && (
                   <p className="text-[9px] font-bold text-green-700 mb-1 flex items-center gap-1">
-                    <CheckSquare className="w-3 h-3" /> Lokasi berhasil dikunci! Geser pin jika perlu.
+                    <CheckSquare className="w-5 h-5" /> Lokasi berhasil dikunci! Geser pin jika perlu.
                   </p>
                 )}
                 {gpsError && (
@@ -113,7 +122,7 @@ const LaporSection = () => {
                 </MapContainer>
               </div>
               <button type="submit" disabled={formState.isSubmitting} className="w-full bg-black text-white hover:bg-gray-800 rounded-xl font-black text-sm py-2 mt-2 border-2 border-black shadow-[2px_2px_0px_#fff] hover:-translate-y-0.5 hover:shadow-[4px_4px_0px_#fff] active:shadow-none active:translate-x-[2px] active:translate-y-[2px] flex items-center justify-center gap-1.5 transition-all uppercase">
-                {formState.isSubmitting ? <Loader2 className="w-3 h-3 animate-spin" /> : 'KIRIM DATA GRATIS'}
+                {formState.isSubmitting ? <Loader2 className="w-5 h-5 animate-spin" /> : 'KIRIM DATA GRATIS'}
               </button>
             </form>
           )}

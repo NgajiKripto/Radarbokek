@@ -1,14 +1,56 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Star, Loader2, CheckSquare, Phone, QrCode, Banknote } from 'lucide-react';
-import { MapContainer, TileLayer, Marker } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, useMap } from 'react-leaflet';
 import LocationPicker from '../ui/LocationPicker';
 
 const DEFAULT_COORDS = { lat: -7.2575, lng: 112.7521 };
+const AUTO_LOCATION_ZOOM = 16;
+const FLY_ANIMATION_DURATION = 1;
+const SUCCESS_MESSAGE_DURATION = 3000;
+const GEOLOCATION_TIMEOUT = 10000;
+
+const FlyToCoords = ({ coords }) => {
+  const map = useMap();
+  useEffect(() => {
+    map.flyTo([coords.lat, coords.lng], AUTO_LOCATION_ZOOM, { duration: FLY_ANIMATION_DURATION });
+  }, [map, coords.lat, coords.lng]);
+  return null;
+};
 
 const UndangSection = () => {
   const [undangForm, setUndangForm] = useState({ nama: '', whatsapp: '', menu: '', harga: '', metodePembayaran: '', nominalUnik: '', coords: DEFAULT_COORDS });
   const [isUndangSubmitting, setIsUndangSubmitting] = useState(false);
   const [undangSuccess, setUndangSuccess] = useState(false);
+  const [isDetecting, setIsDetecting] = useState(false);
+  const [gpsSuccess, setGpsSuccess] = useState(false);
+  const [gpsError, setGpsError] = useState('');
+  const [flyTarget, setFlyTarget] = useState(null);
+
+  const handleAutoLocation = () => {
+    if (!navigator.geolocation) return;
+    setIsDetecting(true);
+    setGpsSuccess(false);
+    setGpsError('');
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const coords = { lat: position.coords.latitude, lng: position.coords.longitude };
+        setUndangForm((prev) => ({ ...prev, coords }));
+        setFlyTarget(coords);
+        setIsDetecting(false);
+        setGpsSuccess(true);
+        setTimeout(() => setGpsSuccess(false), SUCCESS_MESSAGE_DURATION);
+      },
+      (err) => {
+        setIsDetecting(false);
+        if (err.code === err.PERMISSION_DENIED) {
+          setGpsError('Izin lokasi ditolak. Aktifkan GPS di pengaturan browser.');
+        } else {
+          setGpsError('Gagal mendeteksi lokasi. Coba lagi.');
+        }
+      },
+      { enableHighAccuracy: true, timeout: GEOLOCATION_TIMEOUT }
+    );
+  };
   const nominalUnikVal = undangForm.metodePembayaran === 'qris' && parseInt(undangForm.nominalUnik) > 0 ? parseInt(undangForm.nominalUnik) : 0;
   const isFormInvalid = !undangForm.harga || !undangForm.metodePembayaran || (undangForm.metodePembayaran === 'qris' && !undangForm.nominalUnik);
   const totalBiayaUndang = parseInt(undangForm.harga) ? parseInt(undangForm.harga) + 7500 + nominalUnikVal : 0;
@@ -16,7 +58,7 @@ const UndangSection = () => {
   const handleUndangSubmit = (e) => {
     e.preventDefault();
     setIsUndangSubmitting(true);
-    setTimeout(() => { setIsUndangSubmitting(false); setUndangSuccess(true); setUndangForm({ nama: '', whatsapp: '', menu: '', harga: '', metodePembayaran: '', nominalUnik: '', coords: DEFAULT_COORDS }); setTimeout(() => setUndangSuccess(false), 5000); }, 1500);
+    setTimeout(() => { setIsUndangSubmitting(false); setUndangSuccess(true); setUndangForm({ nama: '', whatsapp: '', menu: '', harga: '', metodePembayaran: '', nominalUnik: '', coords: DEFAULT_COORDS }); setFlyTarget(null); setTimeout(() => setUndangSuccess(false), 5000); }, 1500);
   };
 
   return (
@@ -120,9 +162,28 @@ const UndangSection = () => {
 
               <div>
                 <label className="block text-[9px] font-black uppercase mb-1">Lokasi Warung (WAJIB SURABAYA)</label>
+                <div className="flex items-center justify-between mb-1.5">
+                  <button
+                    type="button"
+                    onClick={handleAutoLocation}
+                    disabled={isDetecting}
+                    className="bg-lime-400 border-2 border-black p-2 rounded-lg font-bold text-xs shadow-[2px_2px_0px_#000] hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-none transition-all disabled:opacity-60 disabled:cursor-not-allowed"
+                  >
+                    {isDetecting ? '⏳ Mendeteksi...' : '📍 Gunakan Lokasi Saat Ini'}
+                  </button>
+                </div>
+                {gpsSuccess && (
+                  <p className="text-[9px] font-bold text-green-700 mb-1 flex items-center gap-1">
+                    <CheckSquare className="w-5 h-5" /> Lokasi berhasil dikunci! Geser pin jika perlu.
+                  </p>
+                )}
+                {gpsError && (
+                  <p className="text-[9px] font-bold text-red-600 mb-1">{gpsError}</p>
+                )}
                 <MapContainer center={[undangForm.coords.lat, undangForm.coords.lng]} zoom={13} className="w-full h-48 border-2 border-black rounded-lg z-0 relative">
                   <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors' />
-                  <LocationPicker onLocationSelect={(coords) => setUndangForm({...undangForm, coords})} />
+                  <LocationPicker onLocationSelect={(coords) => { setUndangForm((prev) => ({ ...prev, coords })); setFlyTarget(null); }} />
+                  {flyTarget && <FlyToCoords coords={flyTarget} />}
                   <Marker position={[undangForm.coords.lat, undangForm.coords.lng]} />
                 </MapContainer>
               </div>
@@ -140,7 +201,7 @@ const UndangSection = () => {
               </div>
 
               <button type="submit" disabled={isUndangSubmitting || isFormInvalid} className={`w-full rounded-xl text-white font-black text-sm py-2 mt-2 border-2 border-black flex items-center justify-center gap-1.5 transition-all uppercase ${isFormInvalid ? 'bg-gray-400 cursor-not-allowed' : 'bg-black shadow-[2px_2px_0px_#fff] hover:-translate-y-0.5 hover:shadow-[4px_4px_0px_#fff] active:shadow-none active:translate-x-[2px] active:translate-y-[2px]'}`}>
-                {isUndangSubmitting ? <Loader2 className="w-4 h-4 animate-spin" /> : 'BAYAR SEKARANG!'}
+                {isUndangSubmitting ? <Loader2 className="w-5 h-5 animate-spin" /> : 'BAYAR SEKARANG!'}
               </button>
             </form>
           )}
