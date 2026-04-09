@@ -67,9 +67,10 @@ export default function App() {
       <Navbar scrollY={scrollY} isMobileMenuOpen={isMobileMenuOpen} setIsMobileMenuOpen={setIsMobileMenuOpen} onNav={handleNav} />
 
       <main className="flex-grow flex flex-col">
-        <HeroSection />
+        <section id="home" className="w-full border-b-2 border-black">
+          <HeroSection />
 
-        <ScannerSection
+          <ScannerSection
           geoError={geoError}
           searchError={searchError}
           isLocating={isLocating}
@@ -84,6 +85,7 @@ export default function App() {
           onSearchSubmit={handleSearchSubmit}
           onRestoClick={setSelectedResto}
         />
+        </section>
 
         <AboutSection />
 
