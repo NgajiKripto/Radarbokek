@@ -1,5 +1,5 @@
 const HeroSection = () => (
-  <section id="home" className="w-full pt-10 pb-6 border-b-2 border-black">
+  <div className="w-full pt-10 pb-6">
     <div className="max-w-4xl mx-auto px-5 sm:px-8 text-center group cursor-default">
       <h1 className="text-2xl md:text-4xl font-black uppercase leading-none tracking-tighter mb-1.5 transition-transform duration-300 group-hover:scale-[1.02]">
         RADAR BOKEK<br/>
@@ -9,7 +9,7 @@ const HeroSection = () => (
       </h1>
       <p className="text-[10px] md:text-sm font-bold text-gray-700 mt-3 max-w-[260px] md:max-w-md mx-auto">Nggak usah ribet mikir. Lacak GPS lo, masukin sisa duit di dompet, kita kasih list warung terdekat secara gratis.</p>
     </div>
-  </section>
+  </div>
 );
 
 export default HeroSection;
