@@ -1,7 +1,22 @@
 import { Zap, MapPin } from 'lucide-react';
+import { motion } from 'framer-motion';
+
+const sectionVariants = {
+  hidden: { opacity: 0, y: 50 },
+  visible: { opacity: 1, y: 0, transition: { type: 'spring', stiffness: 100, damping: 20 } },
+};
+
+const MotionDiv = motion.div;
 
 const AboutSection = () => (
-  <div id="about" className="scroll-mt-16">
+  <MotionDiv
+    id="about"
+    variants={sectionVariants}
+    initial="hidden"
+    whileInView="visible"
+    viewport={{ once: true }}
+    className="scroll-mt-16"
+  >
     <section className="w-full bg-[#4DEEEA] py-10 border-b-2 border-black">
       <div className="max-w-4xl mx-auto px-5 sm:px-8">
         <div className="text-center mb-8">
@@ -41,7 +56,7 @@ const AboutSection = () => (
         </ol>
       </div>
     </section>
-  </div>
+  </MotionDiv>
 );
 
 export default AboutSection;

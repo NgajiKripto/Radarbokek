@@ -1,5 +1,13 @@
 import { MapPin, Search, Loader2, AlertTriangle } from 'lucide-react';
+import { motion } from 'framer-motion';
 import BrutalButton from '../ui/BrutalButton';
+
+const sectionVariants = {
+  hidden: { opacity: 0, y: 50 },
+  visible: { opacity: 1, y: 0, transition: { type: 'spring', stiffness: 100, damping: 20 } },
+};
+
+const MotionSection = motion.section;
 
 const ScannerSection = ({
   geoError, searchError,
@@ -8,7 +16,15 @@ const ScannerSection = ({
   isLoadingData, isSearching, filteredResults,
   onSearchSubmit, onRestoClick,
 }) => (
-  <section id="scanner" className="w-full pb-12 scroll-mt-20" aria-label="Scanner warung terdekat">
+  <MotionSection
+    id="scanner"
+    variants={sectionVariants}
+    initial="hidden"
+    whileInView="visible"
+    viewport={{ once: true }}
+    className="w-full pb-12 scroll-mt-20"
+    aria-label="Scanner warung terdekat"
+  >
     <div className="max-w-4xl mx-auto px-5 sm:px-8">
       <div className="max-w-md mx-auto bg-[#FF90E8] p-3 md:p-4 border-2 border-black rounded-2xl shadow-[4px_4px_0px_#000] hover:shadow-[6px_6px_0px_#000] transition-all relative">
         <form onSubmit={onSearchSubmit} className="space-y-3">
@@ -79,7 +95,7 @@ const ScannerSection = ({
         </div>
       )}
     </div>
-  </section>
+  </MotionSection>
 );
 
 export default ScannerSection;
