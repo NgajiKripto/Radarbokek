@@ -41,16 +41,16 @@ const AboutSection = () => (
       </div>
     </section>
 
-    <section className="w-full bg-white py-10 border-b-2 border-black">
+    <section className="w-full bg-[#121212] py-10 border-b-2 border-white">
       <div className="max-w-4xl mx-auto px-5 sm:px-8 text-center">
         <div className="mb-8">
           <h2 className="text-xs md:text-sm font-black uppercase inline-block bg-yellow-300 border-2 border-black rounded-lg px-3 py-1.5 shadow-[2px_2px_0px_#000] rotate-1">TUTORIAL PAKAI</h2>
         </div>
         <ol className="grid md:grid-cols-3 gap-5 list-none p-0 m-0 text-left">
           {[{ num: '01', title: 'AKTIFKAN GPS', desc: 'Pencet tombol lacak lokasi di atas.' },{ num: '02', title: 'CEK ISI DOMPET', desc: 'Masukin sisa duit lo (min 5 ribu).' },{ num: '03', title: 'GAS BERANGKAT', desc: 'Klik cari, satelit muter, pilih warung!' }].map((step, i) => (
-            <li key={i} className="flex flex-col gap-1.5 items-start relative bg-white p-4 border-2 border-dashed border-gray-300 rounded-xl hover:border-black hover:bg-gray-50 transition-colors">
-              <div className="text-2xl font-black text-blue-400 [-webkit-text-stroke:0.5px_black]">{step.num}</div>
-              <div><h3 className="font-black text-[10px] md:text-xs uppercase">{step.title}</h3><p className="text-[9px] md:text-[10px] font-bold text-gray-800 mt-1">{step.desc}</p></div>
+            <li key={i} className="flex flex-col gap-1.5 items-start relative bg-[#1A1A1A] p-4 border-2 border-dashed border-gray-600 rounded-xl hover:border-white hover:bg-[#222] transition-colors">
+              <div className="text-2xl font-black text-blue-400 [-webkit-text-stroke:0.5px_white]">{step.num}</div>
+              <div><h3 className="font-black text-[10px] md:text-xs uppercase text-white">{step.title}</h3><p className="text-[9px] md:text-[10px] font-bold text-gray-400 mt-1">{step.desc}</p></div>
             </li>
           ))}
         </ol>
