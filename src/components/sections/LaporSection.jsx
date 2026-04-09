@@ -1,6 +1,6 @@
-import { useReducer } from 'react';
+import { useReducer, useState, useEffect } from 'react';
 import { Loader2, CheckSquare } from 'lucide-react';
-import { MapContainer, TileLayer, Marker } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, useMap } from 'react-leaflet';
 import LocationPicker from '../ui/LocationPicker';
 
 const DEFAULT_COORDS = { lat: -7.2575, lng: 112.7521 };
@@ -18,8 +18,39 @@ const formReducer = (state, action) => {
   }
 };
 
+const FlyToCoords = ({ coords }) => {
+  const map = useMap();
+  useEffect(() => {
+    map.flyTo([coords.lat, coords.lng], 16, { duration: 1 });
+  }, [map, coords]);
+  return null;
+};
+
 const LaporSection = () => {
   const [formState, dispatch] = useReducer(formReducer, initialFormState);
+  const [isDetecting, setIsDetecting] = useState(false);
+  const [gpsSuccess, setGpsSuccess] = useState(false);
+  const [flyTarget, setFlyTarget] = useState(null);
+
+  const handleAutoLocation = () => {
+    if (!navigator.geolocation) return;
+    setIsDetecting(true);
+    setGpsSuccess(false);
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const coords = { lat: position.coords.latitude, lng: position.coords.longitude };
+        dispatch({ type: 'UPDATE_COORDS', coords });
+        setFlyTarget(coords);
+        setIsDetecting(false);
+        setGpsSuccess(true);
+        setTimeout(() => setGpsSuccess(false), 3000);
+      },
+      () => {
+        setIsDetecting(false);
+      },
+      { enableHighAccuracy: true, timeout: 10000 }
+    );
+  };
 
   return (
     <section id="lapor" className="w-full bg-white py-12 border-b-2 border-black scroll-mt-16">
@@ -45,9 +76,26 @@ const LaporSection = () => {
                 <div><input type="number" required value={formState.hargaTermurah} onChange={(e) => dispatch({ type: 'UPDATE_FIELD', field: 'hargaTermurah', value: e.target.value })} placeholder="Harga (Cth: 10000)" className="w-full border-2 border-black rounded-lg p-1.5 text-[10px] font-bold focus:bg-blue-50 focus:translate-x-0.5 focus:shadow-[-2px_2px_0px_#000] transition-all outline-none placeholder:text-gray-400" /></div>
               </div>
               <div>
+                <div className="flex items-center justify-between mb-1.5">
+                  <span className="text-[9px] font-bold text-gray-500 uppercase">Tandai Lokasi di Peta</span>
+                  <button
+                    type="button"
+                    onClick={handleAutoLocation}
+                    disabled={isDetecting}
+                    className="bg-lime-400 border-2 border-black shadow-[2px_2px_0px_#000] text-xs font-bold px-2 py-0.5 rounded-lg hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-none transition-all disabled:opacity-60 disabled:cursor-not-allowed"
+                  >
+                    {isDetecting ? '⏳ Mendeteksi...' : '📍 Gunakan Lokasi Saat Ini'}
+                  </button>
+                </div>
+                {gpsSuccess && (
+                  <p className="text-[9px] font-bold text-green-700 mb-1 flex items-center gap-1">
+                    <CheckSquare className="w-3 h-3" /> Lokasi berhasil dikunci! Geser pin jika perlu.
+                  </p>
+                )}
                 <MapContainer center={[formState.coords.lat, formState.coords.lng]} zoom={13} className="w-full h-48 border-2 border-black rounded-lg z-0 relative">
                   <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors' />
-                  <LocationPicker onLocationSelect={(coords) => dispatch({ type: 'UPDATE_COORDS', coords })} />
+                  <LocationPicker onLocationSelect={(coords) => { dispatch({ type: 'UPDATE_COORDS', coords }); setFlyTarget(null); }} />
+                  {flyTarget && <FlyToCoords coords={flyTarget} />}
                   <Marker position={[formState.coords.lat, formState.coords.lng]} />
                 </MapContainer>
               </div>
