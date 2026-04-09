@@ -1,12 +1,12 @@
 import { useState } from 'react';
-import { Star, Loader2, CheckSquare } from 'lucide-react';
+import { Star, Loader2, CheckSquare, Phone } from 'lucide-react';
 import { MapContainer, TileLayer, Marker } from 'react-leaflet';
 import LocationPicker from '../ui/LocationPicker';
 
 const DEFAULT_COORDS = { lat: -7.2575, lng: 112.7521 };
 
 const UndangSection = () => {
-  const [undangForm, setUndangForm] = useState({ nama: '', menu: '', harga: '', coords: DEFAULT_COORDS });
+  const [undangForm, setUndangForm] = useState({ nama: '', whatsapp: '', menu: '', harga: '', coords: DEFAULT_COORDS });
   const [isUndangSubmitting, setIsUndangSubmitting] = useState(false);
   const [undangSuccess, setUndangSuccess] = useState(false);
   const totalBiayaUndang = parseInt(undangForm.harga) ? parseInt(undangForm.harga) + 7500 : 0;
@@ -14,7 +14,7 @@ const UndangSection = () => {
   const handleUndangSubmit = (e) => {
     e.preventDefault();
     setIsUndangSubmitting(true);
-    setTimeout(() => { setIsUndangSubmitting(false); setUndangSuccess(true); setUndangForm({ nama: '', menu: '', harga: '', coords: DEFAULT_COORDS }); setTimeout(() => setUndangSuccess(false), 5000); }, 1500);
+    setTimeout(() => { setIsUndangSubmitting(false); setUndangSuccess(true); setUndangForm({ nama: '', whatsapp: '', menu: '', harga: '', coords: DEFAULT_COORDS }); setTimeout(() => setUndangSuccess(false), 5000); }, 1500);
   };
 
   return (
@@ -37,6 +37,26 @@ const UndangSection = () => {
               <div>
                 <label className="block text-[9px] font-black uppercase mb-1">Nama Warung</label>
                 <input type="text" required value={undangForm.nama} onChange={(e) => setUndangForm({...undangForm, nama: e.target.value})} placeholder="Warung Kopi Mantap" className="w-full border-2 border-black rounded-lg p-1.5 text-[10px] font-bold focus:bg-red-50 focus:-translate-y-0.5 transition-all outline-none placeholder:text-gray-400" />
+              </div>
+              <div>
+                <label className="block text-[9px] font-black uppercase mb-1">Nomor WhatsApp (Aktif)</label>
+                <div className="relative">
+                  <Phone className="absolute left-2 top-1/2 -translate-y-1/2 w-3 h-3 text-gray-500 pointer-events-none" />
+                  <input
+                    type="text"
+                    inputMode="numeric"
+                    required
+                    value={undangForm.whatsapp}
+                    onChange={(e) => {
+                      const val = e.target.value.replace(/\D/g, '');
+                      setUndangForm({...undangForm, whatsapp: val});
+                    }}
+                    placeholder="Contoh: 08123456789"
+                    pattern="^(08|62)\d+"
+                    title="Nomor harus diawali dengan 08 atau 62 dan hanya angka"
+                    className="w-full border-2 border-black rounded-xl p-3 pl-7 text-[10px] font-bold shadow-[4px_4px_0px_#000] focus:bg-yellow-50 focus:-translate-y-0.5 transition-all outline-none placeholder:text-gray-400 bg-white"
+                  />
+                </div>
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
