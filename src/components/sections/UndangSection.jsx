@@ -38,12 +38,12 @@ const UndangSection = () => {
             <form onSubmit={handleUndangSubmit} className="space-y-3">
               <div>
                 <label className="block text-[9px] font-black uppercase mb-1">Nama Warung</label>
-                <input type="text" required value={undangForm.nama} onChange={(e) => setUndangForm({...undangForm, nama: e.target.value})} placeholder="Warung Kopi Mantap" className="w-full border-2 border-black rounded-lg p-1.5 text-[10px] font-bold focus:bg-red-50 focus:-translate-y-0.5 transition-all outline-none placeholder:text-gray-400" />
+                <input type="text" required value={undangForm.nama} onChange={(e) => setUndangForm({...undangForm, nama: e.target.value})} placeholder="Warung Kopi Mantap" className="w-full border-2 border-black rounded-xl p-3 text-[10px] font-bold shadow-[4px_4px_0px_#000] focus:bg-red-50 focus:-translate-y-0.5 transition-all outline-none placeholder:text-gray-400" />
               </div>
               <div>
                 <label className="block text-[9px] font-black uppercase mb-1">Nomor WhatsApp (Aktif)</label>
                 <div className="relative">
-                  <Phone className="absolute left-2 top-1/2 -translate-y-1/2 w-3 h-3 text-gray-500 pointer-events-none" />
+                  <Phone className="absolute left-2 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500 pointer-events-none" />
                   <input
                     type="text"
                     inputMode="numeric"
@@ -56,18 +56,18 @@ const UndangSection = () => {
                     placeholder="Contoh: 08123456789"
                     pattern="^(08|62)\d+"
                     title="Nomor harus diawali dengan 08 atau 62 dan hanya angka"
-                    className="w-full border-2 border-black rounded-xl p-3 pl-7 text-[10px] font-bold shadow-[4px_4px_0px_#000] focus:bg-yellow-50 focus:-translate-y-0.5 transition-all outline-none placeholder:text-gray-400 bg-white"
+                    className="w-full border-2 border-black rounded-xl p-3 pl-9 text-[10px] font-bold shadow-[4px_4px_0px_#000] focus:bg-yellow-50 focus:-translate-y-0.5 transition-all outline-none placeholder:text-gray-400 bg-white"
                   />
                 </div>
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
                   <label className="block text-[9px] font-black uppercase mb-1">Menu Yg Direview</label>
-                  <input type="text" required value={undangForm.menu} onChange={(e) => setUndangForm({...undangForm, menu: e.target.value})} placeholder="Kopi Hitam" className="w-full border-2 border-black rounded-lg p-1.5 text-[10px] font-bold focus:bg-red-50 focus:-translate-y-0.5 transition-all outline-none placeholder:text-gray-400" />
+                  <input type="text" required value={undangForm.menu} onChange={(e) => setUndangForm({...undangForm, menu: e.target.value})} placeholder="Kopi Hitam" className="w-full border-2 border-black rounded-xl p-3 text-[10px] font-bold shadow-[4px_4px_0px_#000] focus:bg-red-50 focus:-translate-y-0.5 transition-all outline-none placeholder:text-gray-400" />
                 </div>
                 <div>
                   <label className="block text-[9px] font-black uppercase mb-1">Harga Menu (Rp)</label>
-                  <input type="number" required value={undangForm.harga} onChange={(e) => setUndangForm({...undangForm, harga: e.target.value})} placeholder="Contoh: 10000" className="w-full border-2 border-black rounded-lg p-1.5 text-[10px] font-bold focus:bg-red-50 focus:-translate-y-0.5 transition-all outline-none placeholder:text-gray-400" />
+                  <input type="number" required value={undangForm.harga} onChange={(e) => setUndangForm({...undangForm, harga: e.target.value})} placeholder="Contoh: 10000" className="w-full border-2 border-black rounded-xl p-3 text-[10px] font-bold shadow-[4px_4px_0px_#000] focus:bg-red-50 focus:-translate-y-0.5 transition-all outline-none placeholder:text-gray-400" />
                 </div>
               </div>
               {/* METODE PEMBAYARAN */}
