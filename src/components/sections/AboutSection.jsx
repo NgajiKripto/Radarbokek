@@ -2,7 +2,7 @@ import { Zap, MapPin } from 'lucide-react';
 
 const AboutSection = () => (
   <div id="about" className="scroll-mt-16">
-    <section className="w-full bg-[#4DEEEA] py-10 border-y-2 border-black">
+    <section className="w-full bg-[#4DEEEA] py-10 border-b-2 border-black">
       <div className="max-w-4xl mx-auto px-5 sm:px-8">
         <div className="text-center mb-8">
           <h2 className="text-sm md:text-base font-black uppercase inline-block bg-white px-3 py-1.5 border-2 border-black shadow-[2px_2px_0px_#000] rounded-lg rotate-[-1deg] hover:rotate-0 transition-transform">MASALAH HIDUP LO 🤯</h2>
@@ -16,7 +16,7 @@ const AboutSection = () => (
       </div>
     </section>
 
-    <section className="w-full bg-[#E2F1E7] py-10">
+    <section className="w-full bg-[#E2F1E7] py-10 border-b-2 border-black">
       <div className="max-w-4xl mx-auto px-5 sm:px-8 text-center">
         <div className="bg-black text-white px-3 py-1.5 border-2 border-black rounded-lg rotate-[-1deg] mb-6 shadow-[2px_2px_0px_#FF90E8] inline-block hover:rotate-1 transition-transform"><h2 className="text-xs md:text-sm font-black uppercase">🔥 FITUR SAKTI</h2></div>
         <div className="grid md:grid-cols-2 gap-4 text-left">
@@ -26,7 +26,7 @@ const AboutSection = () => (
       </div>
     </section>
 
-    <section className="w-full bg-white py-10">
+    <section className="w-full bg-white py-10 border-b-2 border-black">
       <div className="max-w-4xl mx-auto px-5 sm:px-8 text-center">
         <div className="mb-8">
           <h2 className="text-xs md:text-sm font-black uppercase inline-block bg-yellow-300 border-2 border-black rounded-lg px-3 py-1.5 shadow-[2px_2px_0px_#000] rotate-1">TUTORIAL PAKAI</h2>
