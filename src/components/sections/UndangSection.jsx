@@ -76,7 +76,7 @@ const UndangSection = () => {
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true }}
-      className="w-full bg-[#FF6B6B] py-12 border-b-2 border-black scroll-mt-16"
+      className="w-full bg-amber-300 py-12 border-b-2 border-black scroll-mt-16"
     >
       <div className="max-w-4xl mx-auto px-5 sm:px-8">
         <div className="max-w-xl mx-auto bg-white p-5 md:p-6 border-2 border-black rounded-2xl shadow-[4px_4px_0px_#000] relative hover:shadow-[6px_6px_0px_#000] transition-shadow">
@@ -95,7 +95,7 @@ const UndangSection = () => {
             <form onSubmit={handleUndangSubmit} className="space-y-3">
               <div>
                 <label className="block text-[9px] font-black uppercase mb-1">Nama Warung</label>
-                <input type="text" required value={undangForm.nama} onChange={(e) => setUndangForm({...undangForm, nama: e.target.value})} placeholder="Warung Kopi Mantap" className="w-full border-2 border-black rounded-xl p-3 text-[10px] font-bold shadow-[4px_4px_0px_#000] focus:bg-red-50 focus:-translate-y-0.5 transition-all outline-none placeholder:text-gray-400" />
+                <input type="text" required value={undangForm.nama} onChange={(e) => setUndangForm({...undangForm, nama: e.target.value})} placeholder="Warung Kopi Mantap" className="w-full border-2 border-black rounded-xl p-3 text-[10px] font-bold shadow-[4px_4px_0px_#000] focus:bg-yellow-50 focus:-translate-y-0.5 transition-all outline-none placeholder:text-gray-400" />
               </div>
               <div>
                 <label className="block text-[9px] font-black uppercase mb-1">Nomor WhatsApp (Aktif)</label>
@@ -120,11 +120,11 @@ const UndangSection = () => {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
                   <label className="block text-[9px] font-black uppercase mb-1">Menu Yg Direview</label>
-                  <input type="text" required value={undangForm.menu} onChange={(e) => setUndangForm({...undangForm, menu: e.target.value})} placeholder="Kopi Hitam" className="w-full border-2 border-black rounded-xl p-3 text-[10px] font-bold shadow-[4px_4px_0px_#000] focus:bg-red-50 focus:-translate-y-0.5 transition-all outline-none placeholder:text-gray-400" />
+                  <input type="text" required value={undangForm.menu} onChange={(e) => setUndangForm({...undangForm, menu: e.target.value})} placeholder="Kopi Hitam" className="w-full border-2 border-black rounded-xl p-3 text-[10px] font-bold shadow-[4px_4px_0px_#000] focus:bg-yellow-50 focus:-translate-y-0.5 transition-all outline-none placeholder:text-gray-400" />
                 </div>
                 <div>
                   <label className="block text-[9px] font-black uppercase mb-1">Harga Menu (Rp)</label>
-                  <input type="number" required value={undangForm.harga} onChange={(e) => setUndangForm({...undangForm, harga: e.target.value})} placeholder="Contoh: 10000" className="w-full border-2 border-black rounded-xl p-3 text-[10px] font-bold shadow-[4px_4px_0px_#000] focus:bg-red-50 focus:-translate-y-0.5 transition-all outline-none placeholder:text-gray-400" />
+                  <input type="number" required value={undangForm.harga} onChange={(e) => setUndangForm({...undangForm, harga: e.target.value})} placeholder="Contoh: 10000" className="w-full border-2 border-black rounded-xl p-3 text-[10px] font-bold shadow-[4px_4px_0px_#000] focus:bg-yellow-50 focus:-translate-y-0.5 transition-all outline-none placeholder:text-gray-400" />
                 </div>
               </div>
               {/* METODE PEMBAYARAN */}

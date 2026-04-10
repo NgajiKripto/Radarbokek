@@ -15,7 +15,7 @@ const FaqSection = () => (
     initial="hidden"
     whileInView="visible"
     viewport={{ once: true }}
-    className="w-full bg-blue-400 py-12 border-b-2 border-black scroll-mt-16"
+    className="w-full bg-sky-400 py-12 border-b-2 border-black scroll-mt-16"
   >
     <div className="max-w-4xl mx-auto px-5 sm:px-8 text-center">
       <div className="mb-6">

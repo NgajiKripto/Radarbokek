@@ -17,8 +17,8 @@
   padding: 0.5rem 1rem;
   border: 2px solid var(--brutal-black);
   border-radius: 0.75rem;
-  background: linear-gradient(180deg, var(--brutal-red-500), var(--brutal-red-600));
-  color: var(--brutal-white);
+  background: linear-gradient(180deg, var(--brutal-yellow-400), var(--brutal-yellow-500));
+  color: var(--brutal-black);
   font-weight: 900;
   text-transform: uppercase;
   letter-spacing: 0.01em;

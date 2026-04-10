@@ -17,7 +17,7 @@ const AboutSection = () => (
     viewport={{ once: true }}
     className="scroll-mt-16"
   >
-    <section className="w-full bg-[#4DEEEA] py-10 border-b-2 border-black">
+    <section className="w-full bg-sky-400 py-10 border-b-2 border-black">
       <div className="max-w-4xl mx-auto px-5 sm:px-8">
         <div className="text-center mb-8">
           <h2 className="text-sm md:text-base font-black uppercase inline-block bg-white px-3 py-1.5 border-2 border-black shadow-[2px_2px_0px_#000] rounded-lg rotate-[-1deg] hover:rotate-0 transition-transform">MASALAH HIDUP LO 🤯</h2>
@@ -31,9 +31,9 @@ const AboutSection = () => (
       </div>
     </section>
 
-    <section className="w-full bg-[#E2F1E7] py-10 border-b-2 border-black">
+    <section className="w-full bg-sky-100 py-10 border-b-2 border-black">
       <div className="max-w-4xl mx-auto px-5 sm:px-8 text-center">
-        <div className="bg-black text-white px-3 py-1.5 border-2 border-black rounded-lg rotate-[-1deg] mb-6 shadow-[2px_2px_0px_#FF90E8] inline-block hover:rotate-1 transition-transform"><h2 className="text-xs md:text-sm font-black uppercase">🔥 FITUR SAKTI</h2></div>
+        <div className="bg-black text-white px-3 py-1.5 border-2 border-black rounded-lg rotate-[-1deg] mb-6 shadow-[2px_2px_0px_#fff] inline-block hover:rotate-1 transition-transform"><h2 className="text-xs md:text-sm font-black uppercase">🔥 FITUR SAKTI</h2></div>
         <div className="grid md:grid-cols-2 gap-4 text-left">
           <div className="bg-white p-4 border-2 border-black rounded-xl shadow-[2px_2px_0px_#000] flex gap-3 items-center hover:translate-x-1 transition-transform"><Zap className="w-8 h-8 text-yellow-500 shrink-0" /><div><h3 className="font-black text-[10px] md:text-xs uppercase">Anti Kantong Jebol</h3><p className="text-[9px] font-bold text-gray-800 mt-1">Cari Jajanan/Makanan/Minuman mulai dari Goceng</p></div></div>
           <div className="bg-white p-4 border-2 border-black rounded-xl shadow-[2px_2px_0px_#000] flex gap-3 items-center hover:translate-x-1 transition-transform"><MapPin className="w-8 h-8 text-red-500 shrink-0" /><div><h3 className="font-black text-[10px] md:text-xs uppercase">Radar 5 KM (OSM)</h3><p className="text-[9px] font-bold text-gray-800 mt-1">Tarik data asli satelit tanpa bergantung sama Google!</p></div></div>

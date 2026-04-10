@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 import useGeolocation from './hooks/useGeolocation';
 import usePlacesSearch from './hooks/usePlacesSearch';
@@ -9,6 +9,7 @@ import Footer from './components/layout/Footer';
 
 import ScrollDots from './components/ui/ScrollDots';
 import BackToTop from './components/ui/BackToTop';
+import ScallopedDivider from './components/ui/ScallopedDivider';
 
 import AdModal from './components/modals/AdModal';
 import RestoModal from './components/modals/RestoModal';
@@ -22,6 +23,9 @@ import LaporSection from './components/sections/LaporSection';
 import UndangSection from './components/sections/UndangSection';
 import FaqSection from './components/sections/FaqSection';
 
+// Section IDs in document order (used for active section detection)
+const SECTION_IDS = ['home', 'about', 'lapor', 'undang', 'faq'];
+
 // ========================================================
 // KOMPONEN UTAMA
 // ========================================================
@@ -33,10 +37,31 @@ export default function App() {
   const [adCountdown, setAdCountdown] = useState(0);
   const [showStickyAd, setShowStickyAd] = useState(true);
   const [showLocationModal, setShowLocationModal] = useState(false);
+  const [activeSection, setActiveSection] = useState('home');
 
   const { locationName, userCoords, isLocating, geoError, getLocation } = useGeolocation();
   const { filteredResults, isSearching, isLoadingData, searchError, search } = usePlacesSearch();
   const { scrollY, scrollProgress } = useScroll();
+
+  // Active section detection via IntersectionObserver
+  const observerRef = useRef(null);
+  useEffect(() => {
+    // rootMargin: top=-40% so section activates slightly before center, bottom=-55% so
+    // only the section occupying the upper portion of the viewport is considered active.
+    observerRef.current = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) setActiveSection(entry.target.id);
+        });
+      },
+      { rootMargin: '-40% 0px -55% 0px', threshold: 0 }
+    );
+    SECTION_IDS.forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) observerRef.current.observe(el);
+    });
+    return () => observerRef.current?.disconnect();
+  }, []);
 
   useEffect(() => {
     let t; if (showAdModal && adCountdown > 0) t = setTimeout(() => setAdCountdown(c => c - 1), 1000);
@@ -69,7 +94,7 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-[#FFFDF5] font-mono text-black selection:bg-red-400 flex flex-col relative overflow-x-hidden text-sm pb-20">
+    <div className="min-h-screen bg-[#FFFDF5] font-mono text-black selection:bg-yellow-400 flex flex-col relative overflow-x-hidden text-sm pb-20">
 
       <ScrollDots scrollProgress={scrollProgress} />
 
@@ -84,10 +109,10 @@ export default function App() {
 
       <RestoModal selectedResto={selectedResto} showAdModal={showAdModal} onClose={() => setSelectedResto(null)} />
 
-      <Navbar scrollY={scrollY} isMobileMenuOpen={isMobileMenuOpen} setIsMobileMenuOpen={setIsMobileMenuOpen} onNav={handleNav} />
+      <Navbar scrollY={scrollY} isMobileMenuOpen={isMobileMenuOpen} setIsMobileMenuOpen={setIsMobileMenuOpen} onNav={handleNav} activeSection={activeSection} />
 
       <main className="flex-grow flex flex-col">
-        <section id="home" className="w-full border-b-2 border-black">
+        <section id="home" className="w-full bg-yellow-400 border-b-2 border-black">
           <HeroSection />
 
           <ScannerSection
@@ -107,13 +132,28 @@ export default function App() {
         />
         </section>
 
+        {/* Divider: Yellow → Sky (AboutSection) */}
+        <ScallopedDivider color="#38bdf8" flip={true} />
+
         <AboutSection />
+
+        {/* Divider: Sky (last About sub-section bg-white) → Lime (LaporSection) */}
+        <ScallopedDivider color="#bef264" flip={true} />
 
         <LaporSection />
 
+        {/* Divider: Lime → Amber (UndangSection) */}
+        <ScallopedDivider color="#fcd34d" flip={true} />
+
         <UndangSection />
 
+        {/* Divider: Amber → Sky (FaqSection) */}
+        <ScallopedDivider color="#38bdf8" flip={true} />
+
         <FaqSection />
+
+        {/* Divider: Sky → Black (Footer) */}
+        <ScallopedDivider color="#000000" flip={true} />
       </main>
 
       <Footer />

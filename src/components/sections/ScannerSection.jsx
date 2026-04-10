@@ -26,7 +26,7 @@ const ScannerSection = ({
     aria-label="Scanner warung terdekat"
   >
     <div className="max-w-4xl mx-auto px-5 sm:px-8">
-      <div className="max-w-md mx-auto bg-[#FF90E8] p-3 md:p-4 border-2 border-black rounded-2xl shadow-[4px_4px_0px_#000] hover:shadow-[6px_6px_0px_#000] transition-all relative">
+      <div className="max-w-md mx-auto bg-white p-3 md:p-4 border-2 border-black rounded-2xl shadow-[4px_4px_0px_#000] hover:shadow-[6px_6px_0px_#000] transition-all relative">
         <form onSubmit={onSearchSubmit} className="space-y-3">
           {geoError || searchError ? (<div className="bg-red-500 text-white p-2 border-2 border-black rounded-lg text-[9px] font-bold flex items-center gap-1.5 animate-[shake_0.5s_ease-in-out]"><AlertTriangle className="w-3 h-3 shrink-0" /><span>{geoError || searchError}</span></div>) : null}
           
