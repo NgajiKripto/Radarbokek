@@ -17,6 +17,7 @@ import LocationPermissionModal from './components/modals/LocationPermissionModal
 
 import HeroSection from './components/sections/HeroSection';
 import ScannerSection from './components/sections/ScannerSection';
+import MarqueeSection from './components/sections/MarqueeSection';
 import AboutSection from './components/sections/AboutSection';
 import LaporSection from './components/sections/LaporSection';
 import UndangSection from './components/sections/UndangSection';
@@ -106,6 +107,8 @@ export default function App() {
           onRestoClick={setSelectedResto}
         />
         </section>
+
+        <MarqueeSection />
 
         <AboutSection />
 
