@@ -77,15 +77,15 @@ const LaporSection = () => {
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true }}
-      className="w-full bg-[#121212] py-12 border-b-2 border-white scroll-mt-16"
+      className="w-full bg-white py-12 border-b-2 border-black scroll-mt-16"
     >
       <div className="max-w-4xl mx-auto px-5 sm:px-8">
-        <div className="max-w-xl mx-auto bg-[#1A1A1A] p-5 md:p-6 border-2 border-white rounded-2xl shadow-[4px_4px_0px_rgba(255,255,255,0.15)] relative hover:shadow-[6px_6px_0px_rgba(255,255,255,0.2)] transition-shadow">
-          <div className="absolute -top-3 right-3 bg-blue-500 text-white rounded-full px-2 py-0.5 border-2 border-white text-[9px] font-black rotate-[5deg] uppercase flex items-center gap-1 shadow-[2px_2px_0px_rgba(255,255,255,0.3)]"><CheckSquare className="w-3 h-3" /> GRATIS</div>
+        <div className="max-w-xl mx-auto bg-white p-5 md:p-6 border-2 border-black rounded-2xl shadow-[4px_4px_0px_#000] relative hover:shadow-[6px_6px_0px_#000] transition-shadow">
+          <div className="absolute -top-3 right-3 bg-blue-500 text-white rounded-full px-2 py-0.5 border-2 border-black text-[9px] font-black rotate-[5deg] uppercase flex items-center gap-1 shadow-[2px_2px_0px_#000]"><CheckSquare className="w-3 h-3" /> GRATIS</div>
           
           <div className="text-center mb-6 mt-1">
-            <h2 className="text-lg md:text-xl font-black uppercase leading-none tracking-tighter text-white">LAPOR WARUNG 📍</h2>
-            <p className="text-[9px] md:text-[10px] font-bold mt-1.5 text-gray-400">Bantu warga temukan warung murah di sekitar lo. Data akan masuk database!</p>
+            <h2 className="text-lg md:text-xl font-black uppercase leading-none tracking-tighter">LAPOR WARUNG 📍</h2>
+            <p className="text-[9px] md:text-[10px] font-bold mt-1.5 text-gray-600">Bantu warga temukan warung murah di sekitar lo. Data akan masuk database!</p>
           </div>
 
           {formState.success ? (
@@ -96,22 +96,22 @@ const LaporSection = () => {
               setTimeout(() => { dispatch({ type: 'SUBMIT_SUCCESS' }); setTimeout(() => dispatch({ type: 'RESET_SUCCESS' }), 5000); }, 1500); 
             }} className="space-y-4">
               <div>
-                <label className="block text-[9px] font-black uppercase mb-1 text-white">Nama Warung</label>
-                <input type="text" required value={formState.namaTempat} onChange={(e) => dispatch({ type: 'UPDATE_FIELD', field: 'namaTempat', value: e.target.value })} placeholder="Nama Warung (Cth: Nasi Goreng Gila)" className="w-full border-2 border-white rounded-xl p-3 text-[10px] font-bold shadow-[4px_4px_0px_rgba(255,255,255,0.15)] bg-[#222] text-white placeholder:text-gray-500 focus:bg-[#2a2a2a] focus:-translate-y-0.5 transition-all outline-none" />
+                <label className="block text-[9px] font-black uppercase mb-1">Nama Warung</label>
+                <input type="text" required value={formState.namaTempat} onChange={(e) => dispatch({ type: 'UPDATE_FIELD', field: 'namaTempat', value: e.target.value })} placeholder="Nama Warung (Cth: Nasi Goreng Gila)" className="w-full border-2 border-black rounded-xl p-3 text-[10px] font-bold shadow-[4px_4px_0px_#000] bg-white focus:bg-blue-50 focus:-translate-y-0.5 transition-all outline-none placeholder:text-gray-400" />
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-[9px] font-black uppercase mb-1 text-white">Menu Andalan</label>
-                  <input type="text" required value={formState.menuTermurah} onChange={(e) => dispatch({ type: 'UPDATE_FIELD', field: 'menuTermurah', value: e.target.value })} placeholder="Menu Andalan" className="w-full border-2 border-white rounded-xl p-3 text-[10px] font-bold shadow-[4px_4px_0px_rgba(255,255,255,0.15)] bg-[#222] text-white placeholder:text-gray-500 focus:bg-[#2a2a2a] focus:-translate-y-0.5 transition-all outline-none" />
+                  <label className="block text-[9px] font-black uppercase mb-1">Menu Andalan</label>
+                  <input type="text" required value={formState.menuTermurah} onChange={(e) => dispatch({ type: 'UPDATE_FIELD', field: 'menuTermurah', value: e.target.value })} placeholder="Menu Andalan" className="w-full border-2 border-black rounded-xl p-3 text-[10px] font-bold shadow-[4px_4px_0px_#000] bg-white focus:bg-blue-50 focus:-translate-y-0.5 transition-all outline-none placeholder:text-gray-400" />
                 </div>
                 <div>
-                  <label className="block text-[9px] font-black uppercase mb-1 text-white">Harga (Rp)</label>
-                  <input type="number" required value={formState.hargaTermurah} onChange={(e) => dispatch({ type: 'UPDATE_FIELD', field: 'hargaTermurah', value: e.target.value })} placeholder="Harga (Cth: 10000)" className="w-full border-2 border-white rounded-xl p-3 text-[10px] font-bold shadow-[4px_4px_0px_rgba(255,255,255,0.15)] bg-[#222] text-white placeholder:text-gray-500 focus:bg-[#2a2a2a] focus:-translate-y-0.5 transition-all outline-none" />
+                  <label className="block text-[9px] font-black uppercase mb-1">Harga (Rp)</label>
+                  <input type="number" required value={formState.hargaTermurah} onChange={(e) => dispatch({ type: 'UPDATE_FIELD', field: 'hargaTermurah', value: e.target.value })} placeholder="Harga (Cth: 10000)" className="w-full border-2 border-black rounded-xl p-3 text-[10px] font-bold shadow-[4px_4px_0px_#000] bg-white focus:bg-blue-50 focus:-translate-y-0.5 transition-all outline-none placeholder:text-gray-400" />
                 </div>
               </div>
               <div>
                 <div className="flex items-center justify-between mb-1.5">
-                  <span className="text-[9px] font-bold text-gray-400 uppercase">Tandai Lokasi di Peta</span>
+                  <span className="text-[9px] font-bold text-gray-500 uppercase">Tandai Lokasi di Peta</span>
                   <button
                     type="button"
                     onClick={handleAutoLocation}
