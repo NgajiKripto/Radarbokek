@@ -88,7 +88,7 @@ export default function App() {
       <Navbar scrollY={scrollY} isMobileMenuOpen={isMobileMenuOpen} setIsMobileMenuOpen={setIsMobileMenuOpen} onNav={handleNav} />
 
       <main className="flex-grow flex flex-col">
-        <section id="home" className="w-full bg-[#0A0A0A] border-b-2 border-white">
+        <section id="home" className="w-full border-b-2 border-black">
           <HeroSection />
 
           <ScannerSection
