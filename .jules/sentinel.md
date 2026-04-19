@@ -1,0 +1,4 @@
+## 2024-05-15 - Removed dangerouslySetInnerHTML and Fixed Vite Vulnerabilities
+**Vulnerability:** Found `dangerouslySetInnerHTML` being used to inject custom CSS and keyframes in `src/App.jsx`, which poses an XSS risk. Additionally, `vite` dev server dependencies had known high-severity vulnerabilities (Arbitrary File Read and Path Traversal).
+**Learning:** React escape hatches like `dangerouslySetInnerHTML` are often used out of convenience for dynamic styles, but even for static or trusted content, they unnecessarily increase the attack surface. It is always better to move static CSS to external stylesheets.
+**Prevention:** Avoid using `dangerouslySetInnerHTML` entirely unless dealing with strictly sanitized HTML from a trusted source. Ensure that static styles and animations are placed in proper CSS files like `src/index.css`.
