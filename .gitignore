@@ -21,5 +21,8 @@ skills-lock.json
 # Dev scripts
 scripts/
 
+# Design references
+skill/
+
 # Local setup
 install.cmd
