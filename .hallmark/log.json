@@ -1,3 +1,0 @@
-[
-  { "date": "2026-07-20", "scope": "app", "macrostructure": "multi-page system", "theme": "custom (warm-terakota)", "enrichment": "none", "brief": "Radar Bokek — full app redesign anti-AI-slop, 6 routes", "pages": ["landing: Marquee Hero", "map: Workbench", "dashboard: Workbench", "profile: Long Form", "topup: Long Form", "auth: Long Form"], "nav": "N5 floating-pill (dark)", "footer": "Ft5 statement", "design_system": "design.md", "font_display": "Instrument Serif", "font_body": "DM Sans", "font_mono": "JetBrains Mono", "accent": "oklch(55% 0.18 25) terakota", "paper": "oklch(97% 0.01 75) warm cream" }
-]
