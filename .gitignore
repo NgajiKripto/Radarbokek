@@ -1,5 +1,23 @@
-node_modules/
+# Documentation / Planning
+prd.md
+Requirements.md
+Database.md
+API.md
+Architecture.md
+User_Flow.md
+panduan.md
+planning.md
+skill/
+
+# Local setup
+install.cmd
+
+# Build output
 dist/
+
+# Dependencies
+node_modules/
+
+# Env
 .env
-*.log
-.DS_Store
+.env.local
