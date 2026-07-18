@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Radar Bokek - Map View</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet"/>
+<!-- Icons -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Leaflet CSS -->
+<link crossorigin="" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "tertiary": "#006a68",
+                        "surface-container": "#f0eded",
+                        "inverse-primary": "#ffb4a4",
+                        "on-surface": "#1c1b1b",
+                        "surface-tint": "#b72301",
+                        "on-tertiary-container": "#00302f",
+                        "on-primary": "#ffffff",
+                        "surface-container-lowest": "#ffffff",
+                        "on-primary-container": "#580c00",
+                        "surface-container-low": "#f6f3f2",
+                        "surface-container-high": "#eae7e7",
+                        "on-secondary-fixed-variant": "#534600",
+                        "background": "#fcf9f8",
+                        "tertiary-fixed": "#98f2ee",
+                        "secondary": "#6e5e00",
+                        "on-secondary-container": "#736200",
+                        "surface": "#F8F7F4",
+                        "teal-fresh": "#46A29F",
+                        "primary-container": "#ff5733",
+                        "radar-yellow": "#FFE156",
+                        "ink": "#1A1A1A",
+                        "surface-bright": "#fcf9f8",
+                        "chili-red": "#FF5733",
+                        "primary-fixed": "#ffdad3",
+                        "on-tertiary-fixed": "#00201f",
+                        "inverse-on-surface": "#f3f0ef",
+                        "on-secondary": "#ffffff",
+                        "secondary-fixed-dim": "#e2c63d",
+                        "tertiary-container": "#439f9c",
+                        "on-secondary-fixed": "#221b00",
+                        "error-container": "#ffdad6",
+                        "on-error-container": "#93000a",
+                        "surface-variant": "#e5e2e1",
+                        "primary": "#b72301",
+                        "on-primary-fixed": "#3d0600",
+                        "error": "#ba1a1a",
+                        "on-tertiary-fixed-variant": "#00504e",
+                        "secondary-fixed": "#ffe25c",
+                        "on-error": "#ffffff",
+                        "tertiary-fixed-dim": "#7cd5d2",
+                        "surface-dim": "#dcd9d9",
+                        "surface-container-highest": "#e5e2e1",
+                        "on-primary-fixed-variant": "#8c1800",
+                        "on-surface-variant": "#5b403a",
+                        "on-background": "#1c1b1b",
+                        "primary-fixed-dim": "#ffb4a4",
+                        "secondary-container": "#fddf54",
+                        "outline-variant": "#e4beb6",
+                        "inverse-surface": "#313030",
+                        "outline": "#8f7069",
+                        "on-tertiary": "#ffffff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "xs": "4px",
+                        "md": "16px",
+                        "margin-desktop": "32px",
+                        "base": "4px",
+                        "xl": "40px",
+                        "lg": "24px",
+                        "margin-mobile": "16px",
+                        "sm": "8px",
+                        "gutter": "16px"
+                    },
+                    "fontFamily": {
+                        "headline-md": ["Space Grotesk"],
+                        "headline-lg": ["Space Grotesk"],
+                        "body-lg": ["Space Grotesk"],
+                        "display-lg": ["Space Grotesk"],
+                        "headline-lg-mobile": ["Space Grotesk"],
+                        "label-sm": ["JetBrains Mono"],
+                        "label-md": ["JetBrains Mono"],
+                        "body-md": ["Space Grotesk"]
+                    },
+                    "fontSize": {
+                        "headline-md": ["24px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                        "headline-lg": ["32px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                        "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "display-lg": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "headline-lg-mobile": ["28px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                        "label-sm": ["12px", {"lineHeight": "1.4", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                        "label-md": ["14px", {"lineHeight": "1.4", "letterSpacing": "0.02em", "fontWeight": "500"}],
+                        "body-md": ["16px", {"lineHeight": "1.5", "fontWeight": "400"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            vertical-align: middle;
+        }
+        .marker-pulse::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: rgba(255, 87, 51, 0.4);
+            animation: pulse-ring 1.5s cubic-bezier(0.455, 0.03, 0.515, 0.955) infinite;
+            top: 0;
+            left: 0;
+            z-index: -1;
+        }
+        @keyframes pulse-ring {
+            0% { transform: scale(0.3); opacity: 1; }
+            80%, 100% { transform: scale(2); opacity: 0; }
+        }
+        .neobrutalist-shadow {
+            box-shadow: 4px 4px 0px 0px #1A1A1A;
+        }
+        .neobrutalist-shadow-sm {
+            box-shadow: 2px 2px 0px 0px #1A1A1A;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .leaflet-control-zoom { border: 2px solid #1A1A1A !important; border-radius: 0 !important; margin-right: 16px !important; }
+        .leaflet-control-zoom-in, .leaflet-control-zoom-out { border-radius: 0 !important; color: #1A1A1A !important; font-weight: bold !important; }
+        
+        #map { height: 100vh; width: 100%; }
+        .bottom-sheet-gradient {
+            background: linear-gradient(to top, rgba(252, 249, 248, 1) 0%, rgba(252, 249, 248, 0) 100%);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface font-body-md overflow-hidden">
+<!-- Shell: TopAppBar Wrapper -->
+<div class="fixed top-0 w-full max-w-[480px] left-1/2 -translate-x-1/2 z-[1000]">
+<!-- Component: TopAppBar -->
+<header class="flex justify-between items-center px-margin-mobile h-16 bg-surface border-b-2 border-ink">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-chili-red" style="font-variation-settings: 'FILL' 1;">radar</span>
+<span class="font-headline-md text-headline-md font-bold tracking-tighter text-chili-red">RADAR BOKEK</span>
+</div>
+<button class="w-10 h-10 flex items-center justify-center bg-surface-container-high border-2 border-ink active:translate-y-0.5 transition-all">
+<span class="material-symbols-outlined text-ink">notifications</span>
+</button>
+</header>
+<!-- Asymmetric Top Control Bar -->
+<div class="p-margin-mobile space-y-3">
+<!-- Search Bar -->
+<div class="relative group">
+<input class="w-full h-12 pl-12 pr-4 bg-surface border-2 border-ink neobrutalist-shadow font-label-md focus:outline-none focus:ring-0 placeholder:text-on-surface-variant transition-all" placeholder="&gt; Cari makanan keliling..." type="text"/>
+<div class="absolute left-4 top-1/2 -translate-y-1/2">
+<span class="material-symbols-outlined text-ink">search</span>
+</div>
+</div>
+<!-- Filter Capsules -->
+<div class="flex gap-2 overflow-x-auto custom-scrollbar pb-1">
+<button class="whitespace-nowrap px-4 py-1.5 bg-radar-yellow border-2 border-ink font-label-md text-ink neobrutalist-shadow-sm active:translate-x-0.5 active:translate-y-0.5 transition-all">
+                    Semua
+                </button>
+<button class="whitespace-nowrap px-4 py-1.5 bg-surface border-2 border-ink font-label-md text-on-surface-variant hover:bg-surface-container-high transition-colors">
+                    Bisa QRIS
+                </button>
+<button class="whitespace-nowrap px-4 py-1.5 bg-surface border-2 border-ink font-label-md text-on-surface-variant hover:bg-surface-container-high transition-colors">
+                    Lagi Mangkal
+                </button>
+<button class="whitespace-nowrap px-4 py-1.5 bg-surface border-2 border-ink font-label-md text-on-surface-variant hover:bg-surface-container-high transition-colors">
+                    Terdekat
+                </button>
+</div>
+</div>
+</div>
+<!-- Main Content: Map Canvas -->
+<main class="relative w-full h-screen max-w-[480px] mx-auto overflow-hidden">
+<div class="z-0" id="map"></div>
+<!-- Floating Action Button (Radar HUD) -->
+<div class="fixed bottom-44 right-6 z-[900]">
+<button class="w-16 h-16 rounded-full bg-chili-red text-white border-2 border-ink neobrutalist-shadow flex items-center justify-center animate-pulse">
+<span class="material-symbols-outlined text-3xl" style="font-variation-settings: 'FILL' 1;">my_location</span>
+</button>
+</div>
+<!-- Hallmark Bottom Sheet -->
+<div class="fixed bottom-20 w-full max-w-[480px] left-1/2 -translate-x-1/2 px-margin-mobile z-[1000]">
+<div class="bg-surface border-2 border-ink p-3 neobrutalist-shadow flex gap-3 cursor-pointer group active:translate-y-0.5 transition-all">
+<!-- Left: 1:1 image cell -->
+<div class="w-24 h-24 border-2 border-ink shrink-0 overflow-hidden">
+<div class="w-full h-full bg-cover bg-center" data-alt="A macro shot of sizzling Indonesian street food, satay skewers grilling over glowing charcoal with vibrant orange sparks. The lighting is dramatic and warm, reflecting the high-energy urban night market aesthetic. Sharp details of peanut sauce texture and smoke wisps, captured in a modern brutalist photographic style with high contrast and saturated colors." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuB5tbh7UI21TqxcQ0DyXKWU1TVOvupn9V00BLZ7bCIFAIdLRwNG7C9fglSmiQNqidW7V-nrXLy3Jm688sFPnyHHkntAXKI1jC_jQVEXv7jCcw5_VirICz62oxguOpbIZN0NcTLclokpBMKNAV8RmEvFIxAQC9Ac1dvPYcO2TjkbC5f9mggL_q1P69IMKPNkoP2zSUdkY8V-75olIs6yKG39fAUG4xd0UCtvuYkmzgrD4VPWW8teDDKFg_B-OWZVj1p_quIULKO2vKuC')"></div>
+</div>
+<!-- Center: Info -->
+<div class="flex-grow flex flex-col justify-between py-0.5">
+<div>
+<h3 class="font-headline-md text-ink leading-tight">Sate Ayam Pak Kumis</h3>
+<div class="flex items-center gap-2 mt-1">
+<span class="flex items-center text-secondary font-label-sm">
+<span class="material-symbols-outlined text-sm mr-0.5" style="font-variation-settings: 'FILL' 1;">star</span>
+                                4.8 (50 Ulasan)
+                            </span>
+</div>
+</div>
+<div class="flex items-center gap-1 text-on-surface-variant font-label-sm">
+<span class="material-symbols-outlined text-sm">near_me</span>
+                        Jarak: 150m
+                    </div>
+</div>
+<!-- Right: Price & Tags -->
+<div class="flex flex-col justify-between items-end shrink-0">
+<div class="text-right">
+<p class="font-label-sm text-on-surface-variant leading-none mb-1">Mulai</p>
+<p class="font-headline-md text-chili-red leading-none">Rp10k</p>
+</div>
+<div class="flex gap-1">
+<span class="px-1.5 py-0.5 bg-teal-fresh/20 border border-teal-fresh text-teal-fresh font-label-sm text-[10px]">QRIS</span>
+<span class="px-1.5 py-0.5 bg-ink text-white font-label-sm text-[10px]">CASH</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Shell: BottomNavBar Wrapper -->
+<nav class="fixed bottom-0 w-full max-w-[480px] left-1/2 -translate-x-1/2 h-20 px-2 pb-safe bg-surface border-t-2 border-ink flex justify-around items-center z-[1100]">
+<!-- Cari (Active) -->
+<button class="flex flex-col items-center justify-center bg-radar-yellow text-ink border-2 border-ink p-1 w-1/4 h-14 active:translate-x-0.5 active:translate-y-0.5 transition-all">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">explore</span>
+<span class="font-label-sm text-label-sm">Cari</span>
+</button>
+<!-- Jualan -->
+<button class="flex flex-col items-center justify-center text-on-surface-variant p-1 w-1/4 h-14 hover:bg-surface-container-highest transition-all active:translate-x-0.5 active:translate-y-0.5">
+<span class="material-symbols-outlined">storefront</span>
+<span class="font-label-sm text-label-sm">Jualan</span>
+</button>
+<!-- Profil -->
+<button class="flex flex-col items-center justify-center text-on-surface-variant p-1 w-1/4 h-14 hover:bg-surface-container-highest transition-all active:translate-x-0.5 active:translate-y-0.5">
+<span class="material-symbols-outlined">person</span>
+<span class="font-label-sm text-label-sm">Profil</span>
+</button>
+</nav>
+</main>
+<!-- Map Scripts -->
+<script crossorigin="" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Map Initialization
+            const map = L.map('map', {
+                zoomControl: false,
+                attributionControl: false
+            }).setView([-6.200000, 106.816666], 15);
+
+            L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+                maxZoom: 19
+            }).addTo(map);
+
+            // Add Zoom Control at bottom right
+            L.control.zoom({ position: 'bottomright' }).addTo(map);
+
+            // Custom Marker Logic
+            const createCustomIcon = (type) => {
+                let color = 'bg-radar-yellow';
+                let icon = 'restaurant';
+                let extraClass = '';
+                let opacity = 'opacity-100';
+
+                if (type === 'pro') {
+                    color = 'bg-chili-red text-white';
+                    icon = 'verified';
+                    extraClass = 'marker-pulse';
+                } else if (type === 'muted') {
+                    color = 'bg-surface-variant';
+                    icon = 'speed';
+                    opacity = 'opacity-50';
+                }
+
+                return L.divIcon({
+                    className: 'custom-div-icon',
+                    html: `
+                        <div class="relative w-10 h-10 flex items-center justify-center border-2 border-ink ${color} ${extraClass} ${opacity} transition-all">
+                            <span class="material-symbols-outlined text-xl">${icon}</span>
+                            <div class="absolute -bottom-1 left-1/2 -translate-x-1/2 w-2 h-2 bg-ink rotate-45"></div>
+                        </div>
+                    `,
+                    iconSize: [40, 44],
+                    iconAnchor: [20, 44]
+                });
+            };
+
+            // Dummy Data for Markers
+            const vendors = [
+                { lat: -6.2000, lng: 106.8166, type: 'pro', name: 'Sate Pak Kumis' },
+                { lat: -6.1980, lng: 106.8200, type: 'standard', name: 'Bakso Mas Joni' },
+                { lat: -6.2020, lng: 106.8150, type: 'muted', name: 'Es Podeng Cepat' },
+                { lat: -6.1950, lng: 106.8100, type: 'standard', name: 'Nasi Goreng Gila' }
+            ];
+
+            vendors.forEach(v => {
+                L.marker([v.lat, v.lng], { icon: createCustomIcon(v.type) }).addTo(map);
+            });
+        });
+
+        // Simple interaction for the bottom sheet
+        const bottomSheet = document.querySelector('.bottom-sheet-gradient + div');
+        if(bottomSheet) {
+            bottomSheet.addEventListener('click', () => {
+                console.log('Vendor detail clicked');
+                // Intent: Open detailed vendor profile
+            });
+        }
+    </script>
+</body></html>

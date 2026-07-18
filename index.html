@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#c4553a" />
+  <meta name="description" content="Radar Bokek — Temukan pedagang keliling di sekitarmu secara real-time" />
+  <link rel="manifest" href="/manifest.json" />
+  <link rel="icon" type="image/png" sizes="192x192" href="/icons/icon-192.png" />
+  <link rel="apple-touch-icon" href="/icons/icon-192.png" />
+  <title>Radar Bokek</title>
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300..700;1,9..40,300..700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/src/styles/tokens.css" />
+  <link rel="stylesheet" href="/src/styles/base.css" />
+  <link rel="stylesheet" href="/src/styles/components.css" />
+</head>
+<body>
+  <!-- Top App Bar -->
+  <header id="top-app-bar" class="top-app-bar">
+    <div class="flex items-center gap-2">
+      <span class="material-symbols-outlined text-accent text-headline" style="font-variation-settings: 'FILL' 1;">radar</span>
+      <h1 class="font-display text-headline font-bold tracking-tight text-ink">Radar Bokek</h1>
+    </div>
+    <button class="hover:bg-paper-2 transition-colors p-2 rounded-md" aria-label="Notifikasi">
+      <span class="material-symbols-outlined text-ink-2">notifications</span>
+    </button>
+  </header>
+
+  <!-- Page container — SPA routes render here -->
+  <main id="app" class="flex-1 pt-14 pb-24"></main>
+
+  <!-- Bottom Navigation — floating pill -->
+  <nav id="bottom-nav" class="bottom-nav pb-safe">
+    <a href="#/map" class="bottom-nav__item" data-route="/map">
+      <span class="material-symbols-outlined">explore</span>
+      <span>Cari</span>
+    </a>
+    <a href="#/merchant/dashboard" class="bottom-nav__item" data-route="/merchant/dashboard">
+      <span class="material-symbols-outlined">storefront</span>
+      <span>Jualan</span>
+    </a>
+    <a href="#/merchant/profile" class="bottom-nav__item" data-route="/merchant/profile">
+      <span class="material-symbols-outlined">person</span>
+      <span>Profil</span>
+    </a>
+  </nav>
+
+  <!-- Offline Banner -->
+  <div id="offline-banner" class="hidden fixed top-14 left-1/2 -translate-x-1/2 w-full max-w-[480px] z-[1200] bg-ink text-paper text-center py-2 text-label-sm font-mono" style="font-family: var(--font-mono);">
+    Mode Offline — Data akan dikirim saat koneksi pulih
+  </div>
+
+  <script type="module" src="/src/app.js"></script>
+</body>
+</html>

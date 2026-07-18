@@ -1,0 +1,225 @@
+/* Hallmark · component styles · modern-minimal · design-system: design.md */
+
+/* ─── Bottom Nav — floating pill ─── */
+.bottom-nav {
+  position: fixed;
+  bottom: var(--space-md);
+  left: 50%;
+  transform: translateX(-50%);
+  width: auto;
+  max-width: 480px;
+  z-index: 1100;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: var(--space-2xs);
+  height: auto;
+  padding: var(--space-2xs) var(--space-xs);
+  background-color: var(--color-ink);
+  border-radius: var(--radius-pill);
+}
+
+.bottom-nav__item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-2xs) var(--space-sm);
+  color: oklch(70% 0.01 60);
+  text-decoration: none;
+  border-radius: var(--radius-pill);
+  transition-property: background-color, color;
+  transition-duration: var(--dur-short);
+  transition-timing-function: var(--ease-out);
+  gap: 2px;
+}
+
+.bottom-nav__item--active {
+  background-color: var(--color-accent);
+  color: var(--color-accent-ink);
+}
+
+.bottom-nav__item .material-symbols-outlined {
+  font-size: 22px;
+}
+
+.bottom-nav__item span:last-child {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.04em;
+  font-weight: 500;
+}
+
+/* ─── Top App Bar ─── */
+.top-app-bar {
+  position: fixed;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 480px;
+  z-index: 1000;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 56px;
+  padding: 0 var(--space-md);
+  background-color: var(--color-paper);
+  border-bottom: 1px solid var(--color-rule);
+}
+
+/* ─── Vendor Card — clean, 1px border ─── */
+.vendor-card {
+  display: flex;
+  gap: var(--space-sm);
+  padding: var(--space-sm);
+  background-color: var(--color-paper);
+  border: 1px solid var(--color-rule);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition-property: border-color, box-shadow;
+  transition-duration: var(--dur-short);
+  transition-timing-function: var(--ease-out);
+}
+
+.vendor-card:hover {
+  border-color: var(--color-ink-2);
+  box-shadow: 0 2px 8px oklch(15% 0.01 60 / 0.08);
+}
+
+.battery-knob {
+  transition-property: left, right, background-color, border-color;
+  transition-duration: var(--dur-med);
+  transition-timing-function: var(--ease-out);
+}
+
+/* Shadow utility for interactive elements */
+.shadow-subtle {
+  box-shadow: 0 2px 8px oklch(15% 0.01 60 / 0.08);
+}
+
+.vendor-card:active {
+  transform: translateY(1px);
+}
+
+/* ─── Filter Capsule ─── */
+.filter-capsule {
+  white-space: nowrap;
+  padding: 6px 14px;
+  border: 1px solid var(--color-rule);
+  border-radius: var(--radius-pill);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  transition-property: background-color, border-color, color;
+  transition-duration: var(--dur-short);
+  transition-timing-function: var(--ease-out);
+  cursor: pointer;
+}
+
+.filter-capsule--active {
+  background-color: var(--color-ink);
+  color: var(--color-paper);
+  border-color: var(--color-ink);
+}
+
+.filter-capsule--inactive {
+  background-color: transparent;
+  color: var(--color-ink-2);
+}
+
+.filter-capsule--inactive:hover {
+  border-color: var(--color-ink-2);
+  color: var(--color-ink);
+}
+
+/* ─── Dashed upload area ─── */
+.upload-area {
+  border: 2px dashed var(--color-rule);
+  border-radius: var(--radius-md);
+  transition-property: border-color, background-color;
+  transition-duration: var(--dur-short);
+  transition-timing-function: var(--ease-out);
+}
+
+.upload-area:hover {
+  border-color: var(--color-ink-2);
+  background-color: var(--color-paper-2);
+}
+
+/* ─── Leaflet overrides ─── */
+.leaflet-control-zoom {
+  border: 1px solid var(--color-rule) !important;
+  border-radius: var(--radius-md) !important;
+  margin-right: var(--space-md) !important;
+  overflow: hidden;
+  box-shadow: 0 2px 8px oklch(15% 0.01 60 / 0.08) !important;
+}
+
+.leaflet-control-zoom-in,
+.leaflet-control-zoom-out {
+  border-radius: 0 !important;
+  color: var(--color-ink) !important;
+  font-weight: 600 !important;
+  background: var(--color-paper) !important;
+  border-bottom: 1px solid var(--color-rule) !important;
+}
+
+.leaflet-control-zoom-out {
+  border-bottom: none !important;
+}
+
+/* ─── Bottom sheet gradient ─── */
+.bottom-sheet-gradient {
+  background: linear-gradient(to top, oklch(97% 0.01 75 / 1) 0%, oklch(97% 0.01 75 / 0) 100%);
+}
+
+/* ─── Card base utility ─── */
+.card {
+  background-color: var(--color-paper);
+  border: 1px solid var(--color-rule);
+  border-radius: var(--radius-md);
+  padding: var(--space-md);
+}
+
+/* ─── Pill button utility ─── */
+.btn-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2xs);
+  padding: var(--space-xs) var(--space-md);
+  border-radius: var(--radius-pill);
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: var(--text-sm);
+  border: none;
+  cursor: pointer;
+  transition-property: background-color, transform, box-shadow;
+  transition-duration: var(--dur-short);
+  transition-timing-function: var(--ease-out);
+}
+
+.btn-pill:active {
+  transform: translateY(1px);
+}
+
+.btn-pill--primary {
+  background-color: var(--color-accent);
+  color: var(--color-accent-ink);
+}
+
+.btn-pill--primary:hover {
+  box-shadow: 0 2px 12px oklch(55% 0.18 25 / 0.25);
+}
+
+.btn-pill--secondary {
+  background-color: transparent;
+  color: var(--color-ink);
+  border: 1px solid var(--color-rule);
+}
+
+.btn-pill--secondary:hover {
+  border-color: var(--color-ink-2);
+}
