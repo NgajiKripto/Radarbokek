@@ -223,3 +223,33 @@
 .btn-pill--secondary:hover {
   border-color: var(--color-ink-2);
 }
+
+/* ─── Map Stats Overlay ─── */
+.map-stats-card {
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+/* ─── Vendor Detail Panel transitions ─── */
+#vendor-detail-panel {
+  will-change: opacity, transform;
+}
+
+/* ─── Radar spin animation ─── */
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.animate-spin-slow {
+  animation: spin-slow 2s linear infinite;
+}
+
+/* ─── Vendor count scale animation ─── */
+#stat-vendor-count {
+  transition: transform 200ms var(--ease-out);
+}
+
+#stat-vendor-count.scale-110 {
+  transform: scale(1.1);
+}

@@ -1,20 +1,28 @@
 /* Hallmark · genre: modern-minimal · macrostructure: Workbench · design-system: design.md
  * theme: custom (warm-terakota) · map page · designed-as-app
+ * Enhanced with floating stats overlay + vendor detail panel (adapted from NeedMCP wireframe)
  */
 import { GeolocationTracker } from '../lib/geolocation.js';
 import { haversineDistance, formatDistance } from '../lib/haversine.js';
 import { SSEClient } from '../lib/sse-client.js';
 import { API_BASE } from '../config/constants.js';
 import { createVendorMarkerIcon, getMarkerType } from '../components/vendor-marker.js';
-import { renderVendorCard, hideVendorCard } from '../components/vendor-card.js';
 import { initSearchBar } from '../components/search-bar.js';
 import { initFilterCapsules } from '../components/filter-capsules.js';
+import { initMapStatsOverlay } from '../components/map-stats-overlay.js';
+import {
+  initVendorDetailPanel,
+  showVendorDetail,
+  hidePanel,
+  isPanelOpen,
+} from '../components/vendor-detail-panel.js';
 
 let userLat = null;
 let userLon = null;
 let activeSearch = '';
 let activeFilter = 'all';
 let _fetchVendors = null;
+let _statsOverlay = null;
 
 export function renderMap() {
   const app = document.getElementById('app');
@@ -46,13 +54,12 @@ export function renderMap() {
         </button>
       </div>
 
-      <!-- Bottom Sheet -->
-      <div id="bottom-sheet" class="hidden fixed bottom-20 w-full max-w-[480px] left-1/2 -translate-x-1/2 px-margin-mobile z-[1000]">
-        <div class="vendor-card" id="vendor-card"></div>
-      </div>
+      <!-- Vendor Detail Panel (replaces old bottom-sheet) -->
+      <div id="vendor-detail-mount"></div>
     </div>
   `;
 
+  // --- Filter capsules ---
   const filterCapsules = initFilterCapsules('filter-bar', (filter) => {
     activeFilter = filter;
     if (userLat != null && userLon != null && _fetchVendors) {
@@ -60,11 +67,32 @@ export function renderMap() {
     }
   });
 
+  // --- Search bar ---
   const searchBar = initSearchBar('search-input', (query) => {
     activeSearch = query;
     if (userLat != null && userLon != null && _fetchVendors) {
       _fetchVendors(userLat, userLon);
     }
+  });
+
+  // --- Stats overlay ---
+  _statsOverlay = initMapStatsOverlay('map');
+
+  // --- Vendor detail panel ---
+  initVendorDetailPanel({
+    onNavigate: (vendor) => {
+      // Open Google Maps directions
+      const url = `https://www.google.com/maps/dir/?api=1&destination=${vendor.lat},${vendor.lon}&travelmode=walking`;
+      window.open(url, '_blank');
+    },
+    onRefresh: () => {
+      if (userLat != null && userLon != null && _fetchVendors) {
+        _fetchVendors(userLat, userLon);
+      }
+    },
+    onClose: () => {
+      // Optionally deselect marker highlight
+    },
   });
 
   loadLeaflet().then((L) => initMap(L));
@@ -78,6 +106,7 @@ export function renderMap() {
       if (window._sseClient) {
         window._sseClient.disconnect();
       }
+      _statsOverlay?.destroy();
     },
   };
 }
@@ -116,6 +145,7 @@ function initMap(L) {
   const markerGroup = L.layerGroup().addTo(map);
   let userMarker = null;
   let vendors = [];
+  let selectedMarker = null;
 
   function renderVendors(vendorList) {
     markerGroup.clearLayers();
@@ -126,15 +156,30 @@ function initMap(L) {
       const icon = createVendorMarkerIcon(tierType);
       if (!icon) return;
       const marker = L.marker([v.lat, v.lon], { icon });
-      marker.on('click', () => {
-        renderVendorCard(v, userLat, userLon);
+      marker.on('click', (e) => {
+        L.DomEvent.stopPropagation(e);
+        // Highlight selected marker
+        if (selectedMarker) {
+          selectedMarker.setZIndexOffset(0);
+        }
+        marker.setZIndexOffset(1000);
+        selectedMarker = marker;
+
+        showVendorDetail(v, userLat, userLon);
       });
       marker.addTo(markerGroup);
     });
+
+    // Update stats overlay
+    _statsOverlay?.update(vendorList, userLat, userLon);
   }
 
   map.on('click', () => {
-    hideVendorCard();
+    hidePanel();
+    if (selectedMarker) {
+      selectedMarker.setZIndexOffset(0);
+      selectedMarker = null;
+    }
   });
 
   _fetchVendors = async function (lat, lon) {
